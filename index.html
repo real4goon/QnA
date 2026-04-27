@@ -124,6 +124,13 @@
   .form-hint{font-size:11px;color:var(--gray-400);}
   .char-count{font-size:11px;color:var(--gray-400);text-align:right;}
   .char-count.warn{color:var(--red);}
+
+  /* 분류 버튼 */
+  .cat-btn{padding:7px 14px;border-radius:20px;border:1.5px solid var(--gray-200);background:white;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:500;color:var(--gray-600);cursor:pointer;transition:all 0.15s;display:inline-flex;align-items:center;gap:6px;}
+  .cat-btn:hover{border-color:var(--blue);color:var(--blue);}
+  .cat-btn.active{background:var(--navy);color:white;border-color:var(--navy);}
+  .cat-count{background:rgba(0,0,0,0.12);border-radius:10px;padding:1px 7px;font-size:11px;font-weight:700;}
+  .cat-btn.active .cat-count{background:rgba(255,255,255,0.25);}
   .submit-row{display:flex;justify-content:flex-end;gap:10px;margin-top:24px;padding-top:20px;border-top:1px solid var(--gray-200);}
 
   /* 제출 결과 */
@@ -197,7 +204,7 @@
     <div class="header-icon">🏥</div>
     <div>
       <h1>한림대학교성심병원 원무팀 민원 대응 자료 검색</h1>
-      <p>고시·법령·해석사례·내부지침 통합 검색 시스템</p>
+      <p>고시·법령·해석사례·내부지침 통합 검색 시스템 <span style="opacity:.5;font-size:10px;">v4.1</span></p>
     </div>
   </div>
   <div class="header-right">
@@ -234,6 +241,20 @@
         <div class="tags" id="quickTags"></div>
       </div>
     </div>
+
+    <!-- 분류별 탐색 -->
+    <div style="background:white;border-radius:14px;padding:18px 20px;box-shadow:0 2px 12px rgba(0,0,0,0.07);margin-bottom:20px;">
+      <div style="font-size:13px;font-weight:600;color:var(--gray-600);margin-bottom:12px;">📂 분류별 탐색</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;" id="categoryBtns">
+        <button class="cat-btn active" onclick="filterCategory('전체',this)">전체 <span class="cat-count" id="cat-전체">0</span></button>
+        <button class="cat-btn" onclick="filterCategory('법령',this)">⚖️ 법령 <span class="cat-count" id="cat-법령">0</span></button>
+        <button class="cat-btn" onclick="filterCategory('고시·기준',this)">📋 고시·기준 <span class="cat-count" id="cat-고시">0</span></button>
+        <button class="cat-btn" onclick="filterCategory('지침·FAQ',this)">📌 지침·FAQ <span class="cat-count" id="cat-지침">0</span></button>
+        <button class="cat-btn" onclick="filterCategory('판례·해석',this)">🔨 판례·해석 <span class="cat-count" id="cat-판례">0</span></button>
+        <button class="cat-btn" onclick="filterCategory('자체FAQ',this)">💬 자체FAQ <span class="cat-count" id="cat-자체">0</span></button>
+      </div>
+    </div>
+
     <div class="result-info" id="resultInfo" style="display:none">
       <div class="result-count" id="resultCount"></div>
     </div>
@@ -450,6 +471,7 @@ window.addEventListener('DOMContentLoaded', () => {
   renderStaffList();
   updateStaffDropdown();
   updateStats();
+  showCategoryItems();
   if (SHEET_ID) {
     document.getElementById('sheetIdInput').value = SHEET_ID;
     document.getElementById('currentSheetId').textContent = SHEET_ID;
@@ -482,7 +504,11 @@ async function loadFromSheet() {
     setBannerConnected();
     renderAdminList();
     updateStats();
-    doSearch();
+    if (document.getElementById('searchInput').value.trim()) {
+      doSearch();
+    } else {
+      showCategoryItems();
+    }
   } catch(e) {
     alert('구글 시트 연결에 실패했습니다.\n시트 ID와 "웹에 게시" 설정을 확인하세요.\n(Form Responses 1 탭도 게시 필요)');
   }
@@ -502,11 +528,10 @@ async function submitData() {
 
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
-  btn.textContent = '⏳ 등록 중...';
+  btn.innerHTML = '⏳ 등록 중...';
 
   const payload = {
-    title,
-    keywords,
+    title, keywords,
     desc:    document.getElementById('reg-desc').value.trim(),
     source:  document.getElementById('reg-source').value.trim(),
     type:    document.getElementById('reg-type').value,
@@ -521,17 +546,65 @@ async function submitData() {
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify(payload),
     });
-    showResult('success','✅ 등록되었습니다! 검색 화면에서 🔄 새로고침을 누르면 반영됩니다.');
+    // 등록 후 3초 뒤 시트 재로드로 반영 확인
+    showResult('success','✅ 전송 완료! 3초 후 시트에서 자동으로 확인합니다...');
     resetRegForm();
+    if (SHEET_ID) {
+      setTimeout(async () => {
+        const prevCount = dataItems.length;
+        await loadFromSheet();
+        const newCount = dataItems.length;
+        if (newCount > prevCount) {
+          showResult('success',`✅ 등록 확인! 총 ${newCount}건 (새로 추가: ${newCount - prevCount}건)`);
+        } else {
+          showResult('success','✅ 전송 완료. 목록에 바로 반영되지 않으면 잠시 후 🔄 새로고침을 눌러주세요.');
+        }
+      }, 3000);
+    }
   } catch(e) {
     showResult('error','❌ 등록에 실패했습니다. 네트워크를 확인해주세요.');
   } finally {
     btn.disabled = false;
-    btn.textContent = '✅ 등록하기';
+    btn.innerHTML = '✅ 등록하기';
   }
 }
 
-function showResult(type, msg) {
+let currentCategory = '전체';
+
+function filterCategory(cat, btn) {
+  currentCategory = cat;
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('searchInput').value = '';
+  showCategoryItems();
+}
+
+function showCategoryItems() {
+  const filtered = currentCategory === '전체'
+    ? dataItems
+    : dataItems.filter(d => d.type === currentCategory);
+  const empty = document.getElementById('emptyState');
+  const info  = document.getElementById('resultInfo');
+  const list  = document.getElementById('cardList');
+  if (!filtered.length) {
+    list.innerHTML=''; info.style.display='none'; empty.style.display='block';
+    empty.querySelector('h3').textContent = currentCategory === '전체' ? '등록된 자료가 없습니다' : `${currentCategory} 분류의 자료가 없습니다`;
+    empty.querySelector('p').textContent = '자료 등록 탭에서 새 자료를 등록해주세요.';
+    return;
+  }
+  empty.style.display='none'; info.style.display='flex';
+  document.getElementById('resultCount').innerHTML = `<span style="color:var(--gray-600);font-weight:400">${currentCategory === '전체' ? '전체' : currentCategory}</span>&nbsp; <span>${filtered.length}건</span>`;
+  list.innerHTML = filtered.map(item=>renderCard({...item, matchedTokens:[]})).join('');
+}
+
+function updateCategoryCounts() {
+  document.getElementById('cat-전체').textContent = dataItems.length;
+  document.getElementById('cat-법령').textContent  = dataItems.filter(d=>d.type==='법령').length;
+  document.getElementById('cat-고시').textContent  = dataItems.filter(d=>d.type==='고시·기준').length;
+  document.getElementById('cat-지침').textContent  = dataItems.filter(d=>d.type==='지침·FAQ').length;
+  document.getElementById('cat-판례').textContent  = dataItems.filter(d=>d.type==='판례·해석').length;
+  document.getElementById('cat-자체').textContent  = dataItems.filter(d=>d.type==='자체FAQ').length;
+}
   const el = document.getElementById('submitResult');
   el.className = `submit-result ${type}`;
   el.textContent = msg;
@@ -556,11 +629,13 @@ function doSearch() {
   const empty= document.getElementById('emptyState');
   const info = document.getElementById('resultInfo');
   const list = document.getElementById('cardList');
+  // 검색어 입력 시 카테고리 전체로 초기화
+  if (q) {
+    currentCategory = '전체';
+    document.querySelectorAll('.cat-btn').forEach((b,i)=>b.classList.toggle('active',i===0));
+  }
   if (!q) {
-    list.innerHTML=''; info.style.display='none'; empty.style.display='block';
-    empty.querySelector('h3').textContent='검색어를 입력하세요';
-    empty.querySelector('p').textContent='진찰료, 진단서, 비급여, 입원확인서 등\n민원 관련 키워드를 입력하면 근거 자료를 찾아드립니다.';
-    return;
+    showCategoryItems(); return;
   }
   const tokens = q.split(/[\s,]+/).filter(Boolean);
   const scored = dataItems.map(item=>{
@@ -642,6 +717,7 @@ function updateStats(){
   document.getElementById('statTotal').textContent=dataItems.length;
   document.getElementById('statLaw').textContent=dataItems.filter(d=>['법령','고시·기준','판례·해석'].includes(d.type)).length;
   document.getElementById('statGuide').textContent=dataItems.filter(d=>['지침·FAQ','자체FAQ'].includes(d.type)).length;
+  updateCategoryCounts();
 }
 
 // ─────────────────────────────────────
