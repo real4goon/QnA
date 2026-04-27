@@ -18,7 +18,6 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g800);min-height:100vh;display:flex;flex-direction:column;}
 
-/* ── 헤더 ── */
 .hdr{background:linear-gradient(135deg,var(--navy),var(--navy-light));color:#fff;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 20px rgba(26,47,78,.3);}
 .hdr-l{display:flex;align-items:center;gap:14px;}
 .hdr-icon{width:44px;height:44px;background:rgba(255,255,255,.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
@@ -26,7 +25,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
 .hdr p{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px;}
 .hdr-r{display:flex;gap:8px;}
 
-/* ── 버튼 ── */
 .btn{padding:8px 16px;border-radius:8px;border:none;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
 .btn:disabled{opacity:.5;cursor:not-allowed;}
 .btn-ghost{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2);}
@@ -35,39 +33,38 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
 .btn-primary:hover{background:#1d4ed8;}
 .btn-success{background:var(--mint);color:#fff;}
 .btn-success:hover{background:#059669;}
+.btn-danger{background:var(--red);color:#fff;}
+.btn-danger:hover{background:#dc2626;}
+.btn-warn{background:var(--warn);color:#fff;}
+.btn-warn:hover{background:#d97706;}
 .btn-outline{background:#fff;color:var(--navy);border:1px solid var(--g200);}
 .btn-outline:hover{background:var(--g50);}
 .btn-sm{padding:5px 12px;font-size:12px;}
 
-/* ── 배너 ── */
 .banner{background:var(--warn-light);border-bottom:2px solid var(--warn);padding:10px 32px;display:flex;align-items:center;gap:12px;font-size:13px;color:#92400e;}
 .banner.ok{background:var(--mint-light);border-color:var(--mint);color:#065f46;}
 .banner span{flex:1;}
 
-/* ── 레이아웃 ── */
 .main{max-width:980px;margin:0 auto;padding:24px;flex:1;width:100%;}
 
-/* ── 탭 ── */
 .tab-nav{display:flex;border-bottom:2px solid var(--g200);margin-bottom:24px;}
 .tab-btn{padding:10px 20px;border:none;background:none;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:500;color:var(--g400);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;}
 .tab-btn.on{color:var(--blue);border-color:var(--blue);font-weight:700;}
 .pane{display:none;}
 .pane.on{display:block;}
 
-/* ── 검색 ── */
 .search-box{background:#fff;border-radius:16px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:16px;}
 .s-label{font-size:13px;color:var(--g600);font-weight:500;margin-bottom:10px;}
 .s-row{display:flex;gap:10px;}
 .s-input{flex:1;height:50px;border:2px solid var(--g200);border-radius:10px;padding:0 18px;font-size:15px;font-family:'Noto Sans KR',sans-serif;color:var(--g800);background:var(--g50);outline:none;transition:all .2s;}
 .s-input:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.1);}
 .s-input::placeholder{color:var(--g400);}
-.s-btn{height:50px;padding:0 24px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;white-space:nowrap;transition:background .2s;}
+.s-btn{height:50px;padding:0 24px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;white-space:nowrap;}
 .s-btn:hover{background:var(--navy-light);}
 .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
 .tag{padding:5px 12px;border-radius:20px;background:var(--g100);color:var(--g600);font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--g200);transition:all .15s;}
 .tag:hover{background:var(--blue-light);color:var(--blue);border-color:var(--blue);}
 
-/* ── 분류 탐색 ── */
 .cat-box{background:#fff;border-radius:14px;padding:16px 20px;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:16px;}
 .cat-title{font-size:13px;font-weight:600;color:var(--g600);margin-bottom:12px;}
 .cat-btns{display:flex;flex-wrap:wrap;gap:8px;}
@@ -77,12 +74,10 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
 .cat-cnt{background:rgba(0,0,0,.12);border-radius:10px;padding:1px 7px;font-size:11px;font-weight:700;}
 .cat-btn.on .cat-cnt{background:rgba(255,255,255,.25);}
 
-/* ── 결과 ── */
 .res-info{margin-bottom:14px;font-size:13px;color:var(--g600);}
 .res-info b{color:var(--navy);font-size:15px;}
 .res-info b span{color:var(--blue);}
 
-/* ── 카드 ── */
 .cards{display:flex;flex-direction:column;gap:12px;}
 .card{background:#fff;border-radius:12px;border:1px solid var(--g200);padding:20px 24px;transition:all .2s;animation:fi .25s ease;}
 @keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
@@ -101,19 +96,17 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
 .kws{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
 .kw{padding:3px 10px;border-radius:20px;background:var(--blue-light);color:var(--blue);font-size:11px;font-weight:600;}
 .kw.hit{background:var(--navy);color:#fff;}
-.card-acts{margin-top:12px;}
+.card-acts{margin-top:12px;display:flex;gap:8px;}
 .file-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:none;font-size:12px;font-weight:600;cursor:pointer;font-family:'Noto Sans KR',sans-serif;text-decoration:none;transition:all .15s;}
 .fb-pdf{background:var(--red-light);color:#b91c1c;}
 .fb-pdf:hover{background:#fecaca;}
-.fb-none{background:var(--g100);color:var(--g400);cursor:not-allowed;}
 
-/* ── 빈 상태 ── */
 .empty{text-align:center;padding:60px 20px;color:var(--g400);}
 .empty-icon{font-size:48px;margin-bottom:16px;}
 .empty h3{font-size:16px;font-weight:600;color:var(--g600);margin-bottom:8px;}
 .empty p{font-size:13px;line-height:1.7;}
 
-/* ── 등록 폼 ── */
+/* 등록 폼 */
 .reg-box{background:#fff;border-radius:16px;padding:32px;box-shadow:0 2px 12px rgba(0,0,0,.07);}
 .reg-title{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:6px;}
 .reg-sub{font-size:13px;color:var(--g400);margin-bottom:24px;}
@@ -129,13 +122,12 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
 .f-sel{height:44px;border:1.5px solid var(--g200);border-radius:8px;padding:0 14px;font-size:13px;font-family:'Noto Sans KR',sans-serif;color:var(--g800);outline:none;background:#fff;}
 .f-hint{font-size:11px;color:var(--g400);}
 .char-c{font-size:11px;color:var(--g400);text-align:right;}
-.char-c.over{color:var(--red);}
 .submit-row{display:flex;justify-content:flex-end;gap:10px;margin-top:24px;padding-top:20px;border-top:1px solid var(--g200);}
 .msg{display:none;margin-top:16px;padding:14px 18px;border-radius:10px;font-size:14px;font-weight:500;}
 .msg.ok{background:var(--mint-light);color:#065f46;border:1.5px solid var(--mint);}
 .msg.err{background:var(--red-light);color:#b91c1c;border:1.5px solid var(--red);}
 
-/* ── 관리자 ── */
+/* 관리자 */
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;}
 .stat{background:#fff;border-radius:12px;padding:18px;text-align:center;border:1px solid var(--g200);}
 .stat-n{font-size:28px;font-weight:700;color:var(--navy);}
@@ -146,7 +138,15 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
 .sub-pane{display:none;}
 .sub-pane.on{display:block;}
 
-/* ── 직원 ── */
+/* 관리자 자료 카드 */
+.admin-card{background:#fff;border-radius:12px;border:1px solid var(--g200);padding:14px 18px;display:flex;align-items:center;gap:14px;margin-bottom:10px;transition:all .2s;}
+.admin-card:hover{box-shadow:0 2px 10px rgba(0,0,0,.08);}
+.admin-card-info{flex:1;min-width:0;}
+.admin-card-title{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.admin-card-sub{font-size:12px;color:var(--g400);margin-top:2px;}
+.admin-card-acts{display:flex;gap:6px;flex-shrink:0;}
+
+/* 직원 */
 .s-box{background:#fff;border-radius:14px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:16px;}
 .s-box-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:16px;}
 .staff-list{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;min-height:36px;}
@@ -157,23 +157,22 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
 .s-del:hover{background:var(--red);color:#fff;}
 .code{background:var(--g100);border-radius:8px;padding:8px 12px;font-family:monospace;font-size:12px;color:var(--navy);margin-top:6px;word-break:break-all;}
 
-/* ── 가이드 ── */
+/* 가이드 */
 .guide-box{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,.07);}
 .g-step{margin-bottom:22px;}
 .g-title{font-size:14px;font-weight:600;color:var(--g800);display:flex;align-items:center;margin-bottom:8px;}
 .g-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;font-size:12px;font-weight:700;margin-right:8px;flex-shrink:0;}
 .g-body{font-size:13px;color:var(--g600);padding-left:32px;line-height:1.9;}
 
-/* ── 모달 ── */
+/* 모달 */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .2s;}
 .overlay.on{opacity:1;pointer-events:all;}
-.modal{background:#fff;border-radius:16px;padding:28px 32px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.3);transform:scale(.95);transition:transform .2s;}
+.modal{background:#fff;border-radius:16px;padding:28px 32px;width:100%;max-width:560px;box-shadow:0 20px 60px rgba(0,0,0,.3);transform:scale(.95);transition:transform .2s;max-height:90vh;overflow-y:auto;}
 .overlay.on .modal{transform:scale(1);}
 .modal h2{font-size:18px;font-weight:700;margin-bottom:6px;color:var(--navy);}
 .modal-sub{font-size:13px;color:var(--g400);margin-bottom:22px;}
 .modal-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:22px;}
 
-/* ── 푸터 ── */
 .footer{background:var(--navy);color:rgba(255,255,255,.7);text-align:center;padding:20px 32px;font-size:12px;line-height:1.8;margin-top:auto;}
 .footer b{color:#fff;font-weight:600;}
 .footer a{color:rgba(255,255,255,.7);text-decoration:underline;}
@@ -192,7 +191,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
     <div class="hdr-icon">🏥</div>
     <div>
       <h1>한림대학교성심병원 원무팀 민원 대응 자료 검색</h1>
-      <p>고시·법령·해석사례·내부지침 통합 검색 시스템 <span style="opacity:.5;font-size:10px;">v4.1</span></p>
+      <p>고시·법령·해석사례·내부지침 통합 검색 시스템 <span style="opacity:.5;font-size:10px;">v4.2</span></p>
     </div>
   </div>
   <div class="hdr-r">
@@ -207,13 +206,13 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
 
 <div class="main">
   <div class="tab-nav">
-    <button class="tab-btn on" id="tb-search"  onclick="goTab('search')">🔍 자료 검색</button>
-    <button class="tab-btn"    id="tb-register" onclick="goTab('register')">➕ 자료 등록</button>
-    <button class="tab-btn"    id="tb-admin"    onclick="requireAdmin(function(){goTab('admin');})">🔐 관리자</button>
-    <button class="tab-btn"    id="tb-guide"    onclick="goTab('guide')">📖 가이드</button>
+    <button class="tab-btn on" id="tb-search"   onclick="goTab('search')">🔍 자료 검색</button>
+    <button class="tab-btn"   id="tb-register"  onclick="goTab('register')">➕ 자료 등록</button>
+    <button class="tab-btn"   id="tb-admin"     onclick="requireAdmin(function(){goTab('admin');})">🔐 관리자</button>
+    <button class="tab-btn"   id="tb-guide"     onclick="goTab('guide')">📖 가이드</button>
   </div>
 
-  <!-- ① 자료 검색 -->
+  <!-- ① 검색 -->
   <div class="pane on" id="pane-search">
     <div class="search-box">
       <div class="s-label">민원 키워드를 입력하세요</div>
@@ -225,24 +224,20 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
       </div>
       <div class="tags" id="quickTags"></div>
     </div>
-
     <div class="cat-box">
       <div class="cat-title">📂 분류별 탐색</div>
       <div class="cat-btns">
-        <button class="cat-btn on" id="cb-전체"   onclick="pickCat('전체',this)">전체 <span class="cat-cnt" id="cc-전체">0</span></button>
-        <button class="cat-btn"    id="cb-법령"   onclick="pickCat('법령',this)">⚖️ 법령 <span class="cat-cnt" id="cc-법령">0</span></button>
-        <button class="cat-btn"    id="cb-고시"   onclick="pickCat('고시·기준',this)">📋 고시·기준 <span class="cat-cnt" id="cc-고시">0</span></button>
-        <button class="cat-btn"    id="cb-지침"   onclick="pickCat('지침·FAQ',this)">📌 지침·FAQ <span class="cat-cnt" id="cc-지침">0</span></button>
-        <button class="cat-btn"    id="cb-판례"   onclick="pickCat('판례·해석',this)">🔨 판례·해석 <span class="cat-cnt" id="cc-판례">0</span></button>
-        <button class="cat-btn"    id="cb-자체"   onclick="pickCat('자체FAQ',this)">💬 자체FAQ <span class="cat-cnt" id="cc-자체">0</span></button>
+        <button class="cat-btn on" onclick="pickCat('전체',this)">전체 <span class="cat-cnt" id="cc-전체">0</span></button>
+        <button class="cat-btn"    onclick="pickCat('법령',this)">⚖️ 법령 <span class="cat-cnt" id="cc-법령">0</span></button>
+        <button class="cat-btn"    onclick="pickCat('고시·기준',this)">📋 고시·기준 <span class="cat-cnt" id="cc-고시">0</span></button>
+        <button class="cat-btn"    onclick="pickCat('지침·FAQ',this)">📌 지침·FAQ <span class="cat-cnt" id="cc-지침">0</span></button>
+        <button class="cat-btn"    onclick="pickCat('판례·해석',this)">🔨 판례·해석 <span class="cat-cnt" id="cc-판례">0</span></button>
+        <button class="cat-btn"    onclick="pickCat('자체FAQ',this)">💬 자체FAQ <span class="cat-cnt" id="cc-자체">0</span></button>
       </div>
     </div>
-
-    <div class="res-info" id="resInfo" style="display:none">
-      <b id="resCount"></b>
-    </div>
+    <div class="res-info" id="resInfo" style="display:none"><b id="resCount"></b></div>
     <div class="cards" id="cardList"></div>
-    <div class="empty" id="emptyState">
+    <div class="empty" id="emptyEl">
       <div class="empty-icon">🔎</div>
       <h3 id="emptyTitle">검색어를 입력하세요</h3>
       <p id="emptyDesc">진찰료, 진단서, 비급여, 입원확인서 등<br>민원 관련 키워드를 입력하면 근거 자료를 찾아드립니다.</p>
@@ -318,9 +313,8 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
       <div style="display:flex;gap:10px;margin-bottom:16px;align-items:center;">
         <button class="btn btn-outline btn-sm" onclick="loadSheet()">🔄 새로고침</button>
         <a id="sheetLink" href="#" target="_blank" class="btn btn-outline btn-sm" style="text-decoration:none;">📊 시트 열기</a>
-        <span style="font-size:12px;color:var(--g400);">수정·삭제는 시트에서 직접 하세요.</span>
       </div>
-      <div class="cards" id="adminCards"></div>
+      <div id="adminCards"></div>
     </div>
 
     <div class="sub-pane" id="sp-staff">
@@ -344,8 +338,8 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
           <button class="btn btn-primary btn-sm" onclick="saveSheet()">저장 및 연결</button>
         </div>
         <div class="f-hint">현재: <span id="curSheet" style="font-family:monospace;font-size:11px;">없음</span></div>
-        <div class="code" style="margin-top:12px;">A:Timestamp | B:제목 | C:키워드 | D:요약 | E:출처 | F:분류 | G:파일링크 | H:등록자</div>
-        <div class="f-hint" style="margin-top:8px;">※ 시트의 "Form Responses 1" 탭을 <b>웹에 게시</b>해야 합니다.</div>
+        <div class="code" style="margin-top:12px;">시트명: 민원자료 | 열순서: 등록일 · 제목 · 키워드 · 요약 · 출처 · 분류 · 파일링크 · 등록자</div>
+        <div class="f-hint" style="margin-top:8px;">※ 시트의 <b>"민원자료"</b> 탭을 웹에 게시해야 합니다. (파일 → 공유 → 웹에 게시)</div>
       </div>
     </div>
   </div>
@@ -356,32 +350,36 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
       <h2 style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:24px;">📖 사용 가이드</h2>
       <div class="g-step">
         <div class="g-title"><span class="g-num">1</span>자료 등록</div>
-        <div class="g-body">상단 <b>➕ 자료 등록</b> 탭 → 양식 작성 → 등록하기 버튼 클릭<br>제출 즉시 구글 시트에 저장되고, 3초 후 자동으로 반영 여부를 확인합니다.</div>
+        <div class="g-body">상단 <b>➕ 자료 등록</b> 탭 → 양식 작성 → 등록하기 클릭<br>제출 즉시 구글 시트 "민원자료" 탭에 저장되고, 3초 후 자동으로 반영 여부를 확인합니다.</div>
       </div>
       <div class="g-step">
-        <div class="g-title"><span class="g-num">2</span>PDF 파일 연결</div>
-        <div class="g-body">구글 드라이브에 PDF 업로드 → 공유 → <b>링크가 있는 모든 사용자(뷰어)</b> → 링크 복사 → 파일 링크 항목에 붙여넣기</div>
+        <div class="g-title"><span class="g-num">2</span>자료 수정</div>
+        <div class="g-body">관리자 탭 → 자료 목록 → 항목의 <b>✏️ 수정</b> 버튼 클릭 → 내용 변경 후 저장</div>
       </div>
       <div class="g-step">
-        <div class="g-title"><span class="g-num">3</span>자료 수정·삭제</div>
-        <div class="g-body">관리자 탭 → 자료 목록 → <b>📊 시트 열기</b> → 시트에서 직접 수정/행 삭제 → 🔄 새로고침</div>
+        <div class="g-title"><span class="g-num">3</span>자료 삭제</div>
+        <div class="g-body">관리자 탭 → 자료 목록 → 항목의 <b>🗑 삭제</b> 버튼 클릭 → 확인</div>
       </div>
       <div class="g-step">
-        <div class="g-title"><span class="g-num">4</span>시트 웹에 게시 (최초 1회)</div>
-        <div class="g-body">구글 시트 → 상단 메뉴 <b>파일 → 공유 → 웹에 게시</b> → Form Responses 1 탭 선택 → 게시</div>
+        <div class="g-title"><span class="g-num">4</span>PDF 파일 연결</div>
+        <div class="g-body">구글 드라이브에 PDF 업로드 → 공유 → <b>링크가 있는 모든 사용자(뷰어)</b> → 링크 복사 → 자료 등록 시 파일 링크 항목에 붙여넣기</div>
+      </div>
+      <div class="g-step">
+        <div class="g-title"><span class="g-num">5</span>시트 웹에 게시 (최초 1회)</div>
+        <div class="g-body">구글 시트 → 파일 → 공유 → 웹에 게시 → <b>"민원자료"</b> 탭 선택 → 게시</div>
       </div>
     </div>
   </div>
 </div>
 
 <div class="footer">
-  <b>한림대학교성심병원 원무팀</b> 민원 대응 자료 검색 시스템 v4.1<br>
+  <b>한림대학교성심병원 원무팀</b> 민원 대응 자료 검색 시스템 v4.2<br>
   개발·문의: <b>김영선</b> &nbsp;|&nbsp; <a href="mailto:4goon@hallym.or.kr">4goon@hallym.or.kr</a>
 </div>
 
 <!-- 관리자 인증 모달 -->
 <div class="overlay" id="adminOverlay">
-  <div class="modal">
+  <div class="modal" style="max-width:400px;">
     <h2>🔐 관리자 인증</h2>
     <div class="modal-sub">관리자 비밀번호를 입력하세요</div>
     <div style="display:flex;flex-direction:column;gap:6px;">
@@ -391,63 +389,110 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
       <div id="pwErr" style="font-size:12px;color:var(--red);display:none;">비밀번호가 틀렸습니다.</div>
     </div>
     <div class="modal-foot">
-      <button class="btn btn-outline" onclick="closeOverlay()">취소</button>
+      <button class="btn btn-outline" onclick="closeOverlay('adminOverlay')">취소</button>
       <button class="btn btn-primary" onclick="doLogin()">확인</button>
     </div>
   </div>
 </div>
 
+<!-- 수정 모달 -->
+<div class="overlay" id="editOverlay">
+  <div class="modal">
+    <h2>✏️ 자료 수정</h2>
+    <div class="modal-sub">내용을 수정하고 저장하세요</div>
+    <input type="hidden" id="e-oldtitle">
+    <div class="fg">
+      <div class="f-group full">
+        <label class="f-label">제목 <span class="f-req">*</span></label>
+        <input class="f-input" id="e-title">
+      </div>
+      <div class="f-group full">
+        <label class="f-label">키워드 <span style="font-weight:400;color:var(--g400)">(쉼표로 구분)</span></label>
+        <input class="f-input" id="e-kw">
+      </div>
+      <div class="f-group full">
+        <label class="f-label">요약</label>
+        <textarea class="f-ta" id="e-desc" maxlength="500"></textarea>
+      </div>
+      <div class="f-group">
+        <label class="f-label">분류</label>
+        <select class="f-sel" id="e-type">
+          <option value="고시·기준">📋 고시·기준</option>
+          <option value="법령">⚖️ 법령</option>
+          <option value="지침·FAQ">📌 지침·FAQ</option>
+          <option value="판례·해석">🔨 판례·해석</option>
+          <option value="자체FAQ">💬 자체FAQ</option>
+        </select>
+      </div>
+      <div class="f-group">
+        <label class="f-label">출처</label>
+        <input class="f-input" id="e-src">
+      </div>
+      <div class="f-group">
+        <label class="f-label">등록자</label>
+        <select class="f-sel" id="e-user"><option value="">-- 선택 --</option></select>
+      </div>
+      <div class="f-group">
+        <label class="f-label">파일 링크</label>
+        <input class="f-input" id="e-link">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeOverlay('editOverlay')">취소</button>
+      <button class="btn btn-primary" id="editSaveBtn" onclick="saveEdit()">💾 저장</button>
+    </div>
+  </div>
+</div>
+
 <script>
-// ════════════════════════════════
-// 설정값
-// ════════════════════════════════
+// ══════════════════════════════════════
+// 설정
+// ══════════════════════════════════════
 const ADMIN_PW   = '4041';
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwVFTPV1FiDH3MvNKHxTFkeS2vUZAhKVJa4dwtU_7ALNc9C8W-sY--8K9-bLVd0kXAJzA/exec';
+const SHEET_NAME = '민원자료';
 
-// ════════════════════════════════
+// ══════════════════════════════════════
 // 상태
-// ════════════════════════════════
-let SHEET_ID    = localStorage.getItem('wonmu_sid') || '';
-let items       = [];
-let selCat      = '전체';
-let isAdmin     = false;
-let adminCb     = null;
-let staff       = JSON.parse(localStorage.getItem('wonmu_staff') || '[]');
-const QUICK     = ['진찰료','진단서','비급여','동의서','입원확인서','의무기록','선택진료','본인부담','환불'];
+// ══════════════════════════════════════
+var SHEET_ID   = localStorage.getItem('wonmu_sid') || '';
+var items      = [];          // 실제 데이터 (시트 연결 후)
+var isSheet    = false;       // 시트 연결 여부
+var selCat     = '전체';
+var isAdmin    = false;
+var adminCb    = null;
+var staff      = JSON.parse(localStorage.getItem('wonmu_staff') || '[]');
 
-const TYPES = {
+var QUICK = ['진찰료','진단서','비급여','동의서','입원확인서','의무기록','선택진료','본인부담','환불'];
+var TYPES = {
   '법령':    {label:'⚖️ 법령',    cls:'b-law'},
   '고시·기준':{label:'📋 고시·기준',cls:'b-notice'},
   '지침·FAQ':{label:'📌 지침·FAQ',cls:'b-guide'},
   '판례·해석':{label:'🔨 판례·해석',cls:'b-judge'},
   '자체FAQ': {label:'💬 자체FAQ', cls:'b-faq'},
 };
-const DEF_TYPE = TYPES['지침·FAQ'];
+var DEFT = TYPES['지침·FAQ'];
 
-// ════════════════════════════════
-// 샘플 데이터
-// ════════════════════════════════
-const SAMPLE = [
+// ══════════════════════════════════════
+// 샘플 데이터 (시트 미연결 시만 표시)
+// ══════════════════════════════════════
+var SAMPLE = [
   {date:'2025-01-15',title:'진단서 발급 시 진찰료 별도 산정 근거',kw:['진찰료','진단서','발급'],desc:'의사가 진단서 작성을 위해 환자를 진찰하는 행위는 요양급여로 인정되며, 진단서 수수료와 별도로 진찰료를 산정할 수 있습니다.',src:'요양급여 기준에 관한 규칙 별표1',type:'고시·기준',link:'',user:'관리자'},
   {date:'2025-02-01',title:'비급여 진료비 사전 서면 동의 의무',kw:['비급여','동의서','사전동의'],desc:'비급여 진료 시행 전 환자 또는 보호자에게 설명하고 서면 동의를 받아야 합니다.',src:'의료법 제45조의2',type:'법령',link:'',user:'관리자'},
   {date:'2025-01-20',title:'제증명 수수료 징수 기준',kw:['입원확인서','진단서','수수료','제증명'],desc:'입원확인서 최대 1,000원, 일반진단서 최대 20,000원 등 항목별 상한이 규정되어 있으며 초과 징수 시 과태료 대상입니다.',src:'의료기관 제증명 수수료 항목 및 금액에 관한 기준',type:'고시·기준',link:'',user:'관리자'},
-  {date:'2025-02-20',title:'본인부담금 환불·과오납 처리 기준',kw:['본인부담','환불','과오납'],desc:'착오로 본인부담금을 과다 징수한 경우 환자에게 즉시 반환해야 합니다. 퇴원 후 3년 이내 청구 가능합니다.',src:'국민건강보험법 제47조의2',type:'지침·FAQ',link:'',user:'관리자'},
+  {date:'2025-02-20',title:'본인부담금 환불·과오납 처리 기준',kw:['본인부담','환불','과오납'],desc:'착오로 본인부담금을 과다 징수한 경우 환자에게 즉시 반환해야 합니다.',src:'국민건강보험법 제47조의2',type:'지침·FAQ',link:'',user:'관리자'},
   {date:'2025-01-30',title:'상급병실 차액 본인부담 기준',kw:['상급병실','1인실','차액','병실'],desc:'환자 희망으로 상급병실 이용 시 차액은 비급여 본인부담 원칙입니다. 의료기관이 배정한 경우 차액 징수 불가합니다.',src:'요양급여 기준에 관한 규칙 제5조',type:'고시·기준',link:'',user:'관리자'},
-  {date:'2025-03-10',title:'외래 재진 기준 (초진·재진 구분)',kw:['초진','재진','외래','진찰료'],desc:'동일 상병으로 30일 이내 동일 요양기관 재내원 시 재진으로 산정합니다. 30일 이후 또는 다른 상병으로 내원 시 초진 산정 가능합니다.',src:'건강보험 행위 급여·비급여 목록 고시',type:'고시·기준',link:'',user:'관리자'},
 ];
 
-// ════════════════════════════════
+// ══════════════════════════════════════
 // 초기화
-// ════════════════════════════════
+// ══════════════════════════════════════
 document.addEventListener('DOMContentLoaded', function() {
   items = SAMPLE.slice();
   buildQuickTags();
-  renderCatCounts();
-  showCat();
-  renderAdminCards();
+  refreshAll();
   renderStaffList();
   refreshUserDropdown();
-  updateStats();
 
   if (SHEET_ID) {
     document.getElementById('sheetId').value = SHEET_ID;
@@ -457,12 +502,13 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-// ════════════════════════════════
-// 구글 시트 읽기
-// ════════════════════════════════
+// ══════════════════════════════════════
+// 시트 읽기
+// ══════════════════════════════════════
 function loadSheet() {
   if (!SHEET_ID) return;
-  var url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&sheet=Form%20Responses%201';
+  var url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID
+    + '/gviz/tq?tqx=out:json&sheet=' + encodeURIComponent(SHEET_NAME);
   fetch(url)
     .then(function(r){ return r.text(); })
     .then(function(text) {
@@ -478,21 +524,26 @@ function loadSheet() {
         };
       }).filter(function(it){return it.title;});
       items = loaded;
+      isSheet = true;
       setBanner(true);
-      renderCatCounts();
-      showCat();
-      renderAdminCards();
-      updateStats();
+      refreshAll();
     })
     .catch(function() {
-      alert('구글 시트 연결에 실패했습니다.\n\n확인사항:\n1. 시트 ID가 올바른지\n2. 파일 → 공유 → 웹에 게시 → Form Responses 1 탭 선택 후 게시했는지');
+      alert('구글 시트 연결에 실패했습니다.\n\n확인사항:\n1. 시트 ID가 올바른지\n2. "민원자료" 탭이 웹에 게시되어 있는지\n   (파일 → 공유 → 웹에 게시 → 민원자료 탭 선택)');
     });
 }
 function cv(row,i){ return row.c&&row.c[i]&&row.c[i].v!=null?String(row.c[i].v):''; }
 
-// ════════════════════════════════
+function refreshAll() {
+  updateCatCounts();
+  showCat();
+  renderAdminCards();
+  updateStats();
+}
+
+// ══════════════════════════════════════
 // 자료 등록
-// ════════════════════════════════
+// ══════════════════════════════════════
 function submitData() {
   var title = document.getElementById('r-title').value.trim();
   var kw    = document.getElementById('r-kw').value.trim();
@@ -501,51 +552,47 @@ function submitData() {
   if (!kw)    return showMsg('err','키워드를 입력해주세요.');
   if (!user)  return showMsg('err','등록자를 선택해주세요.');
 
-  var btn = document.getElementById('submitBtn');
-  btn.disabled = true;
-  btn.innerHTML = '⏳ 등록 중...';
-
-  var payload = {
-    title: title, keywords: kw,
-    desc:  document.getElementById('r-desc').value.trim(),
-    source:document.getElementById('r-src').value.trim(),
-    type:  document.getElementById('r-type').value,
-    link:  document.getElementById('r-link').value.trim(),
-    regUser: user,
-  };
-
-  fetch(SCRIPT_URL, {
-    method: 'POST', mode: 'no-cors',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify(payload),
-  })
-  .then(function() {
-    showMsg('ok','✅ 전송 완료! 3초 후 시트에서 자동으로 반영 여부를 확인합니다...');
+  setSubmitBtn(true);
+  callScript({
+    action:   'add',
+    title:    title,
+    keywords: kw,
+    desc:     document.getElementById('r-desc').value.trim(),
+    source:   document.getElementById('r-src').value.trim(),
+    type:     document.getElementById('r-type').value,
+    link:     document.getElementById('r-link').value.trim(),
+    regUser:  user,
+  }, function() {
+    showMsg('ok','✅ 전송 완료! 3초 후 자동으로 확인합니다...');
     resetForm();
-    btn.disabled = false;
-    btn.innerHTML = '✅ 등록하기';
+    setSubmitBtn(false);
     if (SHEET_ID) {
-      var prevCount = items.length;
+      var prev = items.length;
       setTimeout(function() {
-        var url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&sheet=Form%20Responses%201';
+        var url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID
+          + '/gviz/tq?tqx=out:json&sheet=' + encodeURIComponent(SHEET_NAME);
         fetch(url).then(function(r){return r.text();}).then(function(text){
           var json = JSON.parse(text.substring(47).slice(0,-2));
-          var newCount = json.table.rows.filter(function(r){return cv(r,1);}).length;
-          if (newCount > prevCount) {
-            showMsg('ok','✅ 등록 확인! 총 ' + newCount + '건 (새로 추가: ' + (newCount-prevCount) + '건). 검색 탭에서 확인하세요.');
+          var now = json.table.rows.filter(function(r){return cv(r,1);}).length;
+          if (now > prev) {
+            showMsg('ok','✅ 등록 확인! 총 '+now+'건 (새로 추가: '+(now-prev)+'건)');
             loadSheet();
           } else {
-            showMsg('ok','✅ 전송 완료. 시트에 바로 반영되지 않으면 잠시 후 🔄 새로고침을 눌러주세요.');
+            showMsg('ok','✅ 전송 완료. 목록에 바로 안 보이면 잠시 후 🔄 새로고침을 눌러주세요.');
           }
         }).catch(function(){});
       }, 3000);
     }
-  })
-  .catch(function() {
-    showMsg('err','❌ 등록 실패. 네트워크 상태를 확인해주세요.');
-    btn.disabled = false;
-    btn.innerHTML = '✅ 등록하기';
+  }, function() {
+    showMsg('err','❌ 등록 실패. 네트워크를 확인해주세요.');
+    setSubmitBtn(false);
   });
+}
+
+function setSubmitBtn(loading) {
+  var btn = document.getElementById('submitBtn');
+  btn.disabled = loading;
+  btn.innerHTML = loading ? '⏳ 등록 중...' : '✅ 등록하기';
 }
 
 function showMsg(type, text) {
@@ -557,44 +604,117 @@ function showMsg(type, text) {
 
 function resetForm() {
   ['r-title','r-kw','r-desc','r-src','r-link'].forEach(function(id){
-    document.getElementById(id).value = '';
+    document.getElementById(id).value='';
   });
-  document.getElementById('r-type').value = '고시·기준';
-  document.getElementById('r-user').value = '';
-  document.getElementById('r-cc').textContent = '0 / 500';
+  document.getElementById('r-type').value='고시·기준';
+  document.getElementById('r-user').value='';
+  document.getElementById('r-cc').textContent='0 / 500';
 }
 
-// ════════════════════════════════
+// ══════════════════════════════════════
+// 수정
+// ══════════════════════════════════════
+function openEdit(idx) {
+  var it = items[idx];
+  document.getElementById('e-oldtitle').value = it.title;
+  document.getElementById('e-title').value    = it.title;
+  document.getElementById('e-kw').value       = it.kw.join(', ');
+  document.getElementById('e-desc').value     = it.desc;
+  document.getElementById('e-type').value     = it.type;
+  document.getElementById('e-src').value      = it.src;
+  document.getElementById('e-link').value     = it.link;
+  refreshEditDropdown(it.user);
+  openOverlay('editOverlay');
+}
+
+function refreshEditDropdown(curUser) {
+  var opts = '<option value="">-- 선택 --</option>' + staff.map(function(s){
+    var sel = s.name === curUser ? ' selected' : '';
+    return '<option value="'+s.name+'"'+sel+'>'+s.name+(s.role?' ('+s.role+')':'')+'</option>';
+  }).join('');
+  document.getElementById('e-user').innerHTML = opts;
+}
+
+function saveEdit() {
+  var title = document.getElementById('e-title').value.trim();
+  if (!title) return alert('제목을 입력하세요.');
+  var btn = document.getElementById('editSaveBtn');
+  btn.disabled = true; btn.innerHTML = '⏳ 저장 중...';
+
+  callScript({
+    action:   'edit',
+    oldTitle: document.getElementById('e-oldtitle').value,
+    title:    title,
+    keywords: document.getElementById('e-kw').value.trim(),
+    desc:     document.getElementById('e-desc').value.trim(),
+    source:   document.getElementById('e-src').value.trim(),
+    type:     document.getElementById('e-type').value,
+    link:     document.getElementById('e-link').value.trim(),
+    regUser:  document.getElementById('e-user').value,
+  }, function() {
+    btn.disabled = false; btn.innerHTML = '💾 저장';
+    closeOverlay('editOverlay');
+    setTimeout(loadSheet, 1500);
+  }, function() {
+    btn.disabled = false; btn.innerHTML = '💾 저장';
+    alert('저장 실패. 다시 시도해주세요.');
+  });
+}
+
+// ══════════════════════════════════════
+// 삭제
+// ══════════════════════════════════════
+function deleteItem(idx) {
+  var it = items[idx];
+  if (!confirm('"' + it.title + '"\n\n이 자료를 삭제하시겠습니까?')) return;
+  callScript({action:'delete', title:it.title}, function() {
+    setTimeout(loadSheet, 1500);
+  }, function() {
+    alert('삭제 실패. 다시 시도해주세요.');
+  });
+}
+
+// ══════════════════════════════════════
+// Apps Script 호출
+// ══════════════════════════════════════
+function callScript(payload, onOk, onErr) {
+  fetch(SCRIPT_URL, {
+    method: 'POST', mode: 'no-cors',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify(payload),
+  }).then(onOk).catch(onErr);
+}
+
+// ══════════════════════════════════════
 // 검색
-// ════════════════════════════════
+// ══════════════════════════════════════
 function onSearch() {
   var q = document.getElementById('q').value.trim();
   if (!q) {
     selCat = '전체';
     document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('on');});
-    document.getElementById('cb-전체').classList.add('on');
+    document.querySelector('.cat-btn').classList.add('on');
     showCat(); return;
   }
   var tokens = q.toLowerCase().split(/[\s,]+/).filter(Boolean);
   var scored = items.map(function(it) {
     var score = 0;
-    var full = [it.title].concat(it.kw).concat([it.desc, it.src]).join(' ').toLowerCase();
+    var full = [it.title].concat(it.kw).concat([it.desc,it.src]).join(' ').toLowerCase();
     tokens.forEach(function(t) {
       it.kw.forEach(function(k){ if(k.toLowerCase().includes(t)||t.includes(k.toLowerCase())) score+=3; });
       if(it.title.toLowerCase().includes(t)) score+=2;
       if(full.includes(t)) score+=1;
     });
-    return Object.assign({}, it, {score:score, hits:tokens});
+    return Object.assign({},it,{score:score,hits:tokens});
   }).filter(function(it){return it.score>0;}).sort(function(a,b){return b.score-a.score;});
-
-  renderResults(scored, '검색 결과 <span>' + scored.length + '건</span>',
-    scored.length === 0 ? '관련 자료를 찾지 못했습니다' : '',
-    scored.length === 0 ? '다른 키워드로 검색하거나 ➕ 자료 등록 탭에서 새 자료를 등록해주세요.' : '');
+  renderResults(scored, '검색 결과 <span>'+scored.length+'건</span>',
+    scored.length?'':'관련 자료를 찾지 못했습니다',
+    scored.length?'':'다른 키워드로 검색하거나 ➕ 자료 등록 탭에서 새 자료를 등록해주세요.');
 }
 
-// ════════════════════════════════
+// ══════════════════════════════════════
 // 분류 탐색
-// ════════════════════════════════
+// ══════════════════════════════════════
 function pickCat(cat, btn) {
   selCat = cat;
   document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('on');});
@@ -604,29 +724,14 @@ function pickCat(cat, btn) {
 }
 
 function showCat() {
-  var filtered = selCat === '전체' ? items : items.filter(function(it){return it.type===selCat;});
-  var label = selCat === '전체' ? '전체 <span>' + filtered.length + '건</span>' : selCat + ' <span>' + filtered.length + '건</span>';
-  var emptyTitle = filtered.length ? '' : (selCat==='전체'?'등록된 자료가 없습니다':selCat+' 분류의 자료가 없습니다');
-  var emptyDesc  = filtered.length ? '' : '자료 등록 탭에서 새 자료를 등록해주세요.';
-  renderResults(filtered.map(function(it){return Object.assign({},it,{hits:[]});}), label, emptyTitle, emptyDesc);
+  var filtered = selCat==='전체' ? items : items.filter(function(it){return it.type===selCat;});
+  var label = (selCat==='전체'?'전체':selCat) + ' <span>'+filtered.length+'건</span>';
+  var et = filtered.length?'':(selCat==='전체'?'등록된 자료가 없습니다':selCat+' 분류의 자료가 없습니다');
+  var ed = filtered.length?'':'자료 등록 탭에서 새 자료를 등록해주세요.';
+  renderResults(filtered.map(function(it){return Object.assign({},it,{hits:[]});}),label,et,ed);
 }
 
-function renderResults(list, label, emptyTitle, emptyDesc) {
-  var cl = document.getElementById('cardList');
-  var ei = document.getElementById('emptyState');
-  var ri = document.getElementById('resInfo');
-  if (!list.length) {
-    cl.innerHTML = ''; ri.style.display = 'none'; ei.style.display = 'block';
-    document.getElementById('emptyTitle').textContent = emptyTitle || '자료가 없습니다';
-    document.getElementById('emptyDesc').textContent  = emptyDesc  || '';
-    return;
-  }
-  ei.style.display = 'none'; ri.style.display = 'block';
-  document.getElementById('resCount').innerHTML = label;
-  cl.innerHTML = list.map(makeCard).join('');
-}
-
-function renderCatCounts() {
+function updateCatCounts() {
   document.getElementById('cc-전체').textContent = items.length;
   document.getElementById('cc-법령').textContent = items.filter(function(d){return d.type==='법령';}).length;
   document.getElementById('cc-고시').textContent = items.filter(function(d){return d.type==='고시·기준';}).length;
@@ -635,171 +740,177 @@ function renderCatCounts() {
   document.getElementById('cc-자체').textContent = items.filter(function(d){return d.type==='자체FAQ';}).length;
 }
 
-// ════════════════════════════════
-// 카드
-// ════════════════════════════════
+function renderResults(list, label, emptyTitle, emptyDesc) {
+  var cl=document.getElementById('cardList'),ei=document.getElementById('emptyEl'),ri=document.getElementById('resInfo');
+  if (!list.length) {
+    cl.innerHTML=''; ri.style.display='none'; ei.style.display='block';
+    document.getElementById('emptyTitle').textContent=emptyTitle||'자료가 없습니다';
+    document.getElementById('emptyDesc').textContent=emptyDesc||'';
+    return;
+  }
+  ei.style.display='none'; ri.style.display='block';
+  document.getElementById('resCount').innerHTML=label;
+  cl.innerHTML=list.map(makeCard).join('');
+}
+
+// ══════════════════════════════════════
+// 카드 렌더링
+// ══════════════════════════════════════
 function makeCard(it) {
-  var t = TYPES[it.type] || DEF_TYPE;
-  var kwHtml = it.kw.map(function(k){
-    var hit = it.hits && it.hits.some(function(h){return k.toLowerCase().includes(h)||h.includes(k.toLowerCase());});
+  var t=TYPES[it.type]||DEFT;
+  var kws=it.kw.map(function(k){
+    var hit=it.hits&&it.hits.some(function(h){return k.toLowerCase().includes(h)||h.includes(k.toLowerCase());});
     return '<span class="kw'+(hit?' hit':'')+'">'+k+'</span>';
   }).join('');
-  var fb = it.link
-    ? '<a class="file-btn fb-pdf" href="'+it.link+'" target="_blank">📄 파일 열기</a>'
-    : '';
+  var fb=it.link?'<a class="file-btn fb-pdf" href="'+it.link+'" target="_blank">📄 파일 열기</a>':'';
   return '<div class="card">'
     +'<div class="card-hdr"><span class="badge '+t.cls+'">'+t.label+'</span><span class="card-title">'+it.title+'</span></div>'
-    +'<div class="kws">'+kwHtml+'</div>'
+    +'<div class="kws">'+kws+'</div>'
     +(it.desc?'<div class="card-desc">'+it.desc+'</div>':'')
     +'<div class="card-meta">'
     +(it.src?'<span class="chip">📌 '+it.src+'</span>':'')
     +(it.date?'<span class="chip">🗓 '+it.date+'</span>':'')
     +(it.user?'<span class="chip">👤 '+it.user+'</span>':'')
-    +'</div><div class="card-acts">'+fb+'</div></div>';
+    +'</div>'+(fb?'<div class="card-acts">'+fb+'</div>':'')
+    +'</div>';
 }
 
-// ════════════════════════════════
-// 관리자 목록
-// ════════════════════════════════
+// ══════════════════════════════════════
+// 관리자 목록 (수정/삭제 버튼 포함)
+// ══════════════════════════════════════
 function renderAdminCards() {
-  var el = document.getElementById('adminCards');
-  if (!items.length) { el.innerHTML='<div class="empty"><div class="empty-icon">📭</div><h3>등록된 자료가 없습니다</h3></div>'; return; }
-  el.innerHTML = items.map(function(it){
-    var t = TYPES[it.type] || DEF_TYPE;
-    return '<div class="card" style="display:flex;align-items:center;gap:14px;padding:14px 18px;">'
+  var el=document.getElementById('adminCards');
+  if(!items.length){el.innerHTML='<div class="empty"><div class="empty-icon">📭</div><h3>등록된 자료가 없습니다</h3></div>';return;}
+  el.innerHTML=items.map(function(it,i){
+    var t=TYPES[it.type]||DEFT;
+    return '<div class="admin-card">'
       +'<span class="badge '+t.cls+'" style="flex-shrink:0">'+t.label+'</span>'
-      +'<div style="flex:1;min-width:0;">'
-      +'<div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+it.title+'</div>'
-      +'<div style="font-size:12px;color:var(--g400);margin-top:2px;">'+it.kw.join(', ')+(it.user?' · 👤 '+it.user:'')+'</div>'
+      +'<div class="admin-card-info">'
+      +'<div class="admin-card-title">'+it.title+'</div>'
+      +'<div class="admin-card-sub">'+it.kw.join(', ')+(it.user?' · 👤 '+it.user:'')+'</div>'
+      +'</div>'
+      +'<div class="admin-card-acts">'
+      +(it.link?'<a class="btn btn-outline btn-sm" href="'+it.link+'" target="_blank" style="text-decoration:none;">📄</a>':'')
+      +'<button class="btn btn-warn btn-sm" onclick="openEdit('+i+')">✏️ 수정</button>'
+      +'<button class="btn btn-danger btn-sm" onclick="deleteItem('+i+')">🗑 삭제</button>'
       +'</div></div>';
   }).join('');
 }
 
 function updateStats() {
-  document.getElementById('st-total').textContent = items.length;
-  document.getElementById('st-law').textContent   = items.filter(function(d){return ['법령','고시·기준','판례·해석'].includes(d.type);}).length;
-  document.getElementById('st-guide').textContent = items.filter(function(d){return ['지침·FAQ','자체FAQ'].includes(d.type);}).length;
-  renderCatCounts();
+  document.getElementById('st-total').textContent=items.length;
+  document.getElementById('st-law').textContent=items.filter(function(d){return ['법령','고시·기준','판례·해석'].includes(d.type);}).length;
+  document.getElementById('st-guide').textContent=items.filter(function(d){return ['지침·FAQ','자체FAQ'].includes(d.type);}).length;
 }
 
-// ════════════════════════════════
+// ══════════════════════════════════════
 // 직원 명단
-// ════════════════════════════════
-function saveStaff(){ localStorage.setItem('wonmu_staff', JSON.stringify(staff)); }
-function addStaff() {
-  var name = document.getElementById('sn-name').value.trim();
-  var role = document.getElementById('sn-role').value.trim();
-  if (!name) return alert('이름을 입력하세요.');
-  staff.push({name:name, role:role});
+// ══════════════════════════════════════
+function saveStaff(){localStorage.setItem('wonmu_staff',JSON.stringify(staff));}
+function addStaff(){
+  var name=document.getElementById('sn-name').value.trim();
+  var role=document.getElementById('sn-role').value.trim();
+  if(!name)return alert('이름을 입력하세요.');
+  staff.push({name:name,role:role});
   saveStaff();
-  document.getElementById('sn-name').value = '';
-  document.getElementById('sn-role').value = '';
+  document.getElementById('sn-name').value='';
+  document.getElementById('sn-role').value='';
   renderStaffList();
   refreshUserDropdown();
 }
-function delStaff(i) {
-  if (!confirm(staff[i].name + '을 삭제하시겠습니까?')) return;
-  staff.splice(i,1);
-  saveStaff();
-  renderStaffList();
-  refreshUserDropdown();
+function delStaff(i){
+  if(!confirm(staff[i].name+'을 삭제하시겠습니까?'))return;
+  staff.splice(i,1);saveStaff();renderStaffList();refreshUserDropdown();
 }
-function renderStaffList() {
-  var el = document.getElementById('staffList');
-  if (!staff.length) { el.innerHTML='<span style="font-size:13px;color:var(--g400);">등록된 직원이 없습니다.</span>'; return; }
-  el.innerHTML = staff.map(function(s,i){
+function renderStaffList(){
+  var el=document.getElementById('staffList');
+  if(!staff.length){el.innerHTML='<span style="font-size:13px;color:var(--g400);">등록된 직원이 없습니다.</span>';return;}
+  el.innerHTML=staff.map(function(s,i){
     return '<div class="s-chip"><div><span class="s-name">'+s.name+'</span>'+(s.role?'<span class="s-role"> ('+s.role+')</span>':'')+'</div>'
       +'<button class="s-del" onclick="delStaff('+i+')">✕</button></div>';
   }).join('');
 }
-function refreshUserDropdown() {
-  var opts = '<option value="">-- 선택 --</option>' + staff.map(function(s){
+function refreshUserDropdown(){
+  var opts='<option value="">-- 선택 --</option>'+staff.map(function(s){
     return '<option value="'+s.name+'">'+s.name+(s.role?' ('+s.role+')':'')+'</option>';
   }).join('');
-  document.getElementById('r-user').innerHTML = opts;
+  document.getElementById('r-user').innerHTML=opts;
 }
 
-// ════════════════════════════════
-// 시트 저장
-// ════════════════════════════════
-function saveSheet() {
-  var id = document.getElementById('sheetId').value.trim();
-  if (!id) return alert('시트 ID를 입력하세요.');
-  SHEET_ID = id;
-  localStorage.setItem('wonmu_sid', id);
-  document.getElementById('curSheet').textContent = id;
-  document.getElementById('sheetLink').href = 'https://docs.google.com/spreadsheets/d/' + id;
+// ══════════════════════════════════════
+// 시트 설정
+// ══════════════════════════════════════
+function saveSheet(){
+  var id=document.getElementById('sheetId').value.trim();
+  if(!id)return alert('시트 ID를 입력하세요.');
+  SHEET_ID=id;localStorage.setItem('wonmu_sid',id);
+  document.getElementById('curSheet').textContent=id;
+  document.getElementById('sheetLink').href='https://docs.google.com/spreadsheets/d/'+id;
   loadSheet();
 }
 
-// ════════════════════════════════
+// ══════════════════════════════════════
 // 배너
-// ════════════════════════════════
-function setBanner(ok) {
-  var b = document.getElementById('banner');
-  b.className = 'banner ok';
-  b.innerHTML = '<span>✅ 구글 시트 연결됨 — 실제 자료로 운영 중입니다.</span>'
+// ══════════════════════════════════════
+function setBanner(ok){
+  var b=document.getElementById('banner');
+  b.className='banner ok';
+  b.innerHTML='<span>✅ 구글 시트 연결됨 — 실제 자료로 운영 중입니다.</span>'
     +'<button class="btn btn-outline" onclick="loadSheet()" style="font-size:12px;padding:6px 12px;">🔄 새로고침</button>';
 }
 
-// ════════════════════════════════
+// ══════════════════════════════════════
 // 빠른 태그
-// ════════════════════════════════
-function buildQuickTags() {
-  document.getElementById('quickTags').innerHTML = QUICK.map(function(t){
+// ══════════════════════════════════════
+function buildQuickTags(){
+  document.getElementById('quickTags').innerHTML=QUICK.map(function(t){
     return '<span class="tag" onclick="document.getElementById(\'q\').value=\''+t+'\';onSearch()">'+t+'</span>';
   }).join('');
 }
 
-// ════════════════════════════════
-// 탭 전환
-// ════════════════════════════════
-var TABS = ['search','register','admin','guide'];
-function goTab(name) {
+// ══════════════════════════════════════
+// 탭 / 서브탭
+// ══════════════════════════════════════
+var TABS=['search','register','admin','guide'];
+function goTab(name){
   TABS.forEach(function(n){
-    document.getElementById('tb-'+n).classList.toggle('on', n===name);
-    document.getElementById('pane-'+n).classList.toggle('on', n===name);
+    document.getElementById('tb-'+n).classList.toggle('on',n===name);
+    document.getElementById('pane-'+n).classList.toggle('on',n===name);
   });
 }
-
-// ════════════════════════════════
-// 서브탭
-// ════════════════════════════════
-var SUBS = ['list','staff','settings'];
-function goSub(name, btn) {
+var SUBS=['list','staff','settings'];
+function goSub(name,btn){
   SUBS.forEach(function(n){
-    document.getElementById('sb-'+n).classList.toggle('on', n===name);
-    document.getElementById('sp-'+n).classList.toggle('on', n===name);
+    document.getElementById('sb-'+n).classList.toggle('on',n===name);
+    document.getElementById('sp-'+n).classList.toggle('on',n===name);
   });
 }
 
-// ════════════════════════════════
+// ══════════════════════════════════════
 // 관리자 인증
-// ════════════════════════════════
-function requireAdmin(cb) {
-  if (isAdmin) { cb(); return; }
-  adminCb = cb;
-  document.getElementById('pwInput').value = '';
-  document.getElementById('pwErr').style.display = 'none';
-  document.getElementById('adminOverlay').classList.add('on');
+// ══════════════════════════════════════
+function requireAdmin(cb){
+  if(isAdmin){cb();return;}
+  adminCb=cb;
+  document.getElementById('pwInput').value='';
+  document.getElementById('pwErr').style.display='none';
+  openOverlay('adminOverlay');
   setTimeout(function(){document.getElementById('pwInput').focus();},100);
 }
-function doLogin() {
-  if (document.getElementById('pwInput').value === ADMIN_PW) {
-    isAdmin = true;
-    closeOverlay();
-    if (adminCb) { adminCb(); adminCb = null; }
-  } else {
-    document.getElementById('pwErr').style.display = 'block';
-    document.getElementById('pwInput').value = '';
+function doLogin(){
+  if(document.getElementById('pwInput').value===ADMIN_PW){
+    isAdmin=true;closeOverlay('adminOverlay');
+    if(adminCb){adminCb();adminCb=null;}
+  }else{
+    document.getElementById('pwErr').style.display='block';
+    document.getElementById('pwInput').value='';
     document.getElementById('pwInput').focus();
   }
 }
-function closeOverlay() {
-  document.getElementById('adminOverlay').classList.remove('on');
-}
-document.getElementById('adminOverlay').addEventListener('click', function(e){
-  if (e.target === this) closeOverlay();
+function openOverlay(id){document.getElementById(id).classList.add('on');}
+function closeOverlay(id){document.getElementById(id).classList.remove('on');}
+document.querySelectorAll('.overlay').forEach(function(el){
+  el.addEventListener('click',function(e){if(e.target===el)closeOverlay(el.id);});
 });
 </script>
 </body>
