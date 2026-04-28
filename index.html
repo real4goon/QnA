@@ -225,7 +225,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
     <div class="hdr-icon">🏥</div>
     <div>
       <h1>한림대학교성심병원 원무팀 민원 자료 검색</h1>
-      <p>고시·법령·해석사례·내부지침 통합 검색 시스템 <span style="opacity:.5;font-size:10px;">v5.0</span></p>
+      <p>고시·법령·해석사례·내부지침 통합 검색 시스템 <span style="opacity:.5;font-size:10px;">v5.1</span></p>
     </div>
   </div>
   <div class="hdr-r">
@@ -407,9 +407,8 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
     <div class="sub-pane" id="sp-staff">
       <div class="s-box">
         <div class="s-box-title">👥 직원 명단 관리</div>
-        <div style="background:var(--warn-light);border:1px solid var(--warn);border-radius:8px;padding:10px 14px;font-size:12px;color:#92400e;margin-bottom:16px;">
-          ⚠️ 직원 명단은 이 기기(브라우저)에만 저장됩니다. 다른 기기에서 접속하거나 캐시가 지워지면 초기화됩니다.<br>
-          아래 <b>백업 복사</b>로 텍스트를 저장해두고, 필요 시 <b>복원 붙여넣기</b>로 복구하세요.
+        <div style="background:var(--mint-light);border:1px solid var(--mint);border-radius:8px;padding:10px 14px;font-size:12px;color:#065f46;margin-bottom:16px;">
+          ✅ 직원 명단은 구글 시트 <b>"직원명단"</b> 탭에 저장됩니다. 어느 기기에서도 동일하게 표시됩니다.
         </div>
         <div class="chip-list" id="staffList"></div>
         <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px;">
@@ -417,10 +416,11 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
           <input class="f-input" id="sn-role" placeholder="직책 (예: 주임)" style="width:130px;">
           <button class="btn btn-success btn-sm" onclick="addStaff()">＋ 추가</button>
         </div>
-        <div style="border-top:1px solid var(--g200);padding-top:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-          <button class="btn btn-primary btn-sm" onclick="exportStaffCode()">📋 코드로 저장 (Claude용)</button>
-          <span style="font-size:11px;color:var(--g400);">생성된 코드를 Claude에 붙여넣어 파일에 영구 반영하세요.</span>
+        <div style="border-top:1px solid var(--g200);padding-top:12px;display:flex;gap:8px;">
+          <button class="btn btn-primary btn-sm" onclick="syncStaffToSheet()">☁️ 시트에 저장</button>
+          <button class="btn btn-outline btn-sm" onclick="loadStaffFromSheet()">🔄 시트에서 불러오기</button>
         </div>
+        <div class="f-hint" style="margin-top:8px;">추가/삭제 후 반드시 <b>☁️ 시트에 저장</b>을 눌러야 모든 기기에 반영됩니다.</div>
       </div>
     </div>
 
@@ -493,7 +493,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
 </div>
 
 <div class="footer">
-  <b>한림대학교성심병원 원무팀</b> 민원 자료 검색 시스템 v5.0<br>
+  <b>한림대학교성심병원 원무팀</b> 민원 자료 검색 시스템 v5.1<br>
   개발·문의: <b>김영선</b> &nbsp;|&nbsp; <a href="mailto:4goon@hallym.or.kr">4goon@hallym.or.kr</a>
 </div>
 
@@ -779,6 +779,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('sheetLink').href = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID;
     setEmpty('자료를 불러오는 중...','잠시만 기다려주세요.');
     loadSheet();
+    // 시트에서 직원 명단 자동 로드
+    loadStaffFromSheetSilent();
   }
 });
 
@@ -917,9 +919,22 @@ function deleteItem(idx){
 // ══════════════════════════════════════
 // Apps Script 호출
 // ══════════════════════════════════════
-function callScript(payload,onOk,onErr){
-  fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
-    .then(onOk).catch(onErr);
+function callScript(payload, onOk, onErr) {
+  // getStaff/saveStaff는 응답이 필요하므로 cors 모드 시도
+  if (payload.action === 'getStaff' || payload.action === 'saveStaff') {
+    fetch(SCRIPT_URL, {
+      method:'POST',
+      headers:{'Content-Type':'text/plain'},
+      body: JSON.stringify(payload),
+    }).then(function(r){return r.text();}).then(onOk).catch(onErr);
+  } else {
+    // 자료 등록/수정/삭제는 no-cors (응답 불필요)
+    fetch(SCRIPT_URL, {
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload),
+    }).then(onOk).catch(onErr);
+  }
 }
 
 // ══════════════════════════════════════
@@ -1200,19 +1215,45 @@ function renderCatMgmt(){
 }
 
 // ══════════════════════════════════════
-// 직원 명단
+// 직원 명단 (구글 시트 연동)
 // ══════════════════════════════════════
 function saveStaff(){ localStorage.setItem('wonmu_staff', JSON.stringify(staff)); }
-function exportStaffCode() {
-  var code = 'var DEFAULT_STAFF = ' + JSON.stringify(staff, null, 2) + ';';
-  var w = window.open('', '_blank', 'width=600,height=400');
-  w.document.write('<html><body style="font-family:monospace;padding:20px;">'
-    + '<h3 style="margin-bottom:12px;">아래 내용을 Claude에 붙여넣고<br>"DEFAULT_STAFF를 이걸로 바꿔줘"라고 하세요</h3>'
-    + '<textarea style="width:100%;height:200px;font-family:monospace;font-size:13px;" onclick="this.select()">'
-    + code + '</textarea>'
-    + '<p style="margin-top:8px;font-size:12px;color:#666;">Ctrl+A → Ctrl+C 로 전체 복사</p>'
-    + '</body></html>');
+
+function loadStaffFromSheetSilent() {
+  callScript({action:'getStaff'}, function(res) {
+    try {
+      var loaded = JSON.parse(res);
+      if (loaded && loaded.data && loaded.data.length > 0) {
+        staff = loaded.data;
+        saveStaff();
+        renderStaffList();
+        refreshUserDropdown();
+      }
+    } catch(e) {}
+  }, function(){});
 }
+
+function loadStaffFromSheet() {
+  callScript({action:'getStaff'}, function(res) {
+    try {
+      var loaded = JSON.parse(res);
+      if (loaded && loaded.data) {
+        staff = loaded.data;
+        saveStaff();
+        renderStaffList();
+        refreshUserDropdown();
+        alert('직원 명단을 시트에서 불러왔습니다. ('+staff.length+'명)');
+      }
+    } catch(e) {}
+  }, function(){ alert('시트에서 불러오기 실패. Apps Script URL을 확인하세요.'); });
+}
+
+function syncStaffToSheet() {
+  callScript({action:'saveStaff', staff:staff}, function() {
+    alert('직원 명단이 시트에 저장되었습니다.\n모든 기기에서 "🔄 시트에서 불러오기"를 누르면 반영됩니다.');
+  }, function(){ alert('시트 저장 실패. Apps Script URL을 확인하세요.'); });
+}
+
 function addStaff(){
   var name=document.getElementById('sn-name').value.trim();
   var role=document.getElementById('sn-role').value.trim();
