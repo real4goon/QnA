@@ -722,16 +722,15 @@ function applyFont(targetId, fontName) {
   el.focus();
   var sel = window.getSelection();
   if (!sel || sel.toString() === '') {
-    // 선택 없으면 전체에 폰트 적용
     el.style.fontFamily = fontName + ', sans-serif';
   } else {
     document.execCommand('fontName', false, fontName);
   }
 }
+
+function applyColor(targetId, cmd, color) {
   var el = document.getElementById(targetId);
   el.focus();
-  // 선택 영역 없으면 전체 선택 안내
-  var sel = window.getSelection();
   if (!sel || sel.rangeCount === 0 || sel.toString() === '') {
     alert('색상을 적용할 텍스트를 먼저 드래그하여 선택하세요.');
     return;
