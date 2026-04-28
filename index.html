@@ -201,11 +201,11 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
     <div class="hdr-icon">🏥</div>
     <div>
       <h1>한림대학교성심병원 원무팀 민원 대응 자료 검색</h1>
-      <p>고시·법령·해석사례·내부지침 통합 검색 시스템 <span style="opacity:.5;font-size:10px;">v4.5</span></p>
+      <p>고시·법령·해석사례·내부지침 통합 검색 시스템 <span style="opacity:.5;font-size:10px;">v4.6</span></p>
     </div>
   </div>
   <div class="hdr-r">
-    <button class="btn btn-ghost" onclick="goTab('register')">➕ 자료 등록</button>
+    <button class="btn btn-ghost" onclick="requireStaff(function(){goTab('register');})">➕ 자료 등록</button>
     <button class="btn btn-ghost" onclick="requireAdmin(function(){goTab('admin');})">🔐 관리자</button>
   </div>
 </div>
@@ -217,8 +217,8 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
 <div class="main">
   <div class="tab-nav">
     <button class="tab-btn on" id="tb-search"   onclick="goTab('search')">🔍 자료 검색</button>
-    <button class="tab-btn"   id="tb-register"  onclick="goTab('register')">➕ 자료 등록</button>
-    <button class="tab-btn"   id="tb-refs"      onclick="goTab('refs')">🔗 참고자료</button>
+    <button class="tab-btn"   id="tb-register"  onclick="requireStaff(function(){goTab('register');})">➕ 자료 등록</button>
+    <button class="tab-btn"   id="tb-refs"      onclick="requireStaff(function(){goTab('refs');})">🔗 참고자료</button>
     <button class="tab-btn"   id="tb-admin"     onclick="requireAdmin(function(){goTab('admin');})">🔐 관리자</button>
     <button class="tab-btn"   id="tb-guide"     onclick="goTab('guide')">📖 가이드</button>
   </div>
@@ -386,10 +386,34 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
       </div>
 
       <div class="s-box">
+        <div class="s-box-title">🔑 비밀번호 변경</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div class="f-group">
+            <label class="f-label">관리자 비번 변경</label>
+            <div style="display:flex;gap:8px;">
+              <input class="f-input" id="new-admin-pw" type="password" placeholder="새 비밀번호" style="flex:1;">
+              <button class="btn btn-warn btn-sm" onclick="changeAdminPw()">변경</button>
+            </div>
+            <div class="f-hint">현재: <span id="cur-admin-pw" style="font-family:monospace;cursor:pointer;" onclick="this.textContent=ADMIN_PW">클릭하여 표시</span></div>
+          </div>
+          <div class="f-group">
+            <label class="f-label">직원 비번 변경 <span style="font-weight:400;color:var(--g400)">(자료등록·참고자료)</span></label>
+            <div style="display:flex;gap:8px;">
+              <input class="f-input" id="new-staff-pw" type="password" placeholder="새 비밀번호" style="flex:1;">
+              <button class="btn btn-warn btn-sm" onclick="changeStaffPw()">변경</button>
+            </div>
+            <div class="f-hint">현재: <span id="cur-staff-pw" style="font-family:monospace;cursor:pointer;" onclick="this.textContent=STAFF_PW">클릭하여 표시</span></div>
+          </div>
+        </div>
+        <div class="f-hint" style="margin-top:10px;color:var(--red);">⚠️ 변경은 이 기기에만 적용됩니다. 전체 반영은 Claude를 통해 코드 수정이 필요합니다.</div>
+      </div>
+
+      <div class="s-box">
         <div class="s-box-title">📋 주요 설정값 (개발자 참고용)</div>
-        <div style="font-size:12px;color:var(--g600);line-height:2;">
-          <div><b>관리자 비번:</b> <span id="show-pw" style="font-family:monospace;background:var(--g100);padding:2px 8px;border-radius:4px;cursor:pointer;" onclick="this.textContent=ADMIN_PW">클릭하여 표시</span></div>
-          <div style="margin-top:6px;"><b>시트 ID:</b></div>
+        <div style="font-size:12px;color:var(--g600);line-height:2.2;">
+          <div><b>관리자 비번:</b> <span style="font-family:monospace;background:var(--g100);padding:2px 8px;border-radius:4px;cursor:pointer;" onclick="this.textContent=ADMIN_PW">클릭하여 표시</span></div>
+          <div><b>직원 비번:</b> <span style="font-family:monospace;background:var(--g100);padding:2px 8px;border-radius:4px;cursor:pointer;" onclick="this.textContent=STAFF_PW">클릭하여 표시</span></div>
+          <div style="margin-top:4px;"><b>시트 ID:</b></div>
           <div class="code" id="show-sid" style="margin-top:4px;word-break:break-all;"></div>
           <div style="margin-top:8px;"><b>Apps Script URL:</b></div>
           <div class="code" style="margin-top:4px;word-break:break-all;font-size:11px;">https://script.google.com/macros/s/AKfycbwVFTPV1FiDH3MvNKHxTFkeS2vUZAhKVJa4dwtU_7ALNc9C8W-sY--8K9-bLVd0kXAJzA/exec</div>
@@ -425,8 +449,26 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
 </div>
 
 <div class="footer">
-  <b>한림대학교성심병원 원무팀</b> 민원 대응 자료 검색 시스템 v4.5<br>
+  <b>한림대학교성심병원 원무팀</b> 민원 대응 자료 검색 시스템 v4.6<br>
   개발·문의: <b>김영선</b> &nbsp;|&nbsp; <a href="mailto:4goon@hallym.or.kr">4goon@hallym.or.kr</a>
+</div>
+
+<!-- 직원 인증 모달 -->
+<div class="overlay" id="staffOverlay">
+  <div class="modal" style="max-width:400px;">
+    <h2>🔒 직원 인증</h2>
+    <div class="modal-sub">자료 등록은 직원 비밀번호가 필요합니다</div>
+    <div style="display:flex;flex-direction:column;gap:6px;">
+      <label class="f-label">비밀번호</label>
+      <input class="f-input" id="staffPwInput" type="password" placeholder="직원 비밀번호 입력"
+        onkeydown="if(event.key==='Enter')doStaffLogin()">
+      <div id="staffPwErr" style="font-size:12px;color:var(--red);display:none;">비밀번호가 틀렸습니다.</div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeOverlay('staffOverlay')">취소</button>
+      <button class="btn btn-primary" onclick="doStaffLogin()">확인</button>
+    </div>
+  </div>
 </div>
 
 <!-- 관리자 인증 모달 -->
@@ -501,7 +543,8 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
 // ══════════════════════════════════════
 // 설정 — 시트 ID는 여기서 직접 관리
 // ══════════════════════════════════════
-var ADMIN_PW   = '4041';
+var ADMIN_PW  = '4041';  // 관리자 비번 (관리자 탭)
+var STAFF_PW  = '4045';  // 직원 비번 (자료 등록, 참고자료 등록)
 var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwVFTPV1FiDH3MvNKHxTFkeS2vUZAhKVJa4dwtU_7ALNc9C8W-sY--8K9-bLVd0kXAJzA/exec';
 var SHEET_NAME = '민원자료';
 // ↓ 시트 ID 변경 시 여기만 수정
@@ -512,10 +555,15 @@ var DEFAULT_SHEET_ID = '1WAx5fhY0CmwIV7A_QUBzx1aFZBqO2Ko_diEJDwqYYh0';
 // ══════════════════════════════════════
 // localStorage 저장값 있으면 우선 사용, 없으면 기본값 사용
 var SHEET_ID = localStorage.getItem('wonmu_sid') || DEFAULT_SHEET_ID;
+// 비번도 localStorage 우선 (관리자가 앱에서 변경한 경우)
+if (localStorage.getItem('wonmu_admin_pw')) ADMIN_PW = localStorage.getItem('wonmu_admin_pw');
+if (localStorage.getItem('wonmu_staff_pw')) STAFF_PW = localStorage.getItem('wonmu_staff_pw');
 var items    = [];
 var selCat   = '전체';
 var isAdmin  = false;
+var isStaff  = false;  // 직원 인증 상태
 var adminCb  = null;
+var staffCb  = null;
 var staff    = JSON.parse(localStorage.getItem('wonmu_staff') || '[]');
 
 // 기본 분류 (localStorage에 없으면 사용)
@@ -1143,6 +1191,55 @@ function goSub(name,btn){
     var pw=document.getElementById('show-pw');
     if(pw) pw.textContent='클릭하여 표시';
   }
+}
+
+// ══════════════════════════════════════
+// 직원 인증
+// ══════════════════════════════════════
+function requireStaff(cb) {
+  // 관리자 인증 상태면 직원 탭도 바로 접근
+  if (isStaff || isAdmin) { cb(); return; }
+  staffCb = cb;
+  document.getElementById('staffPwInput').value = '';
+  document.getElementById('staffPwErr').style.display = 'none';
+  openOverlay('staffOverlay');
+  setTimeout(function(){ document.getElementById('staffPwInput').focus(); }, 100);
+}
+function doStaffLogin() {
+  var pw = document.getElementById('staffPwInput').value;
+  if (pw === STAFF_PW || pw === ADMIN_PW) {
+    isStaff = true;
+    closeOverlay('staffOverlay');
+    if (staffCb) { staffCb(); staffCb = null; }
+  } else {
+    document.getElementById('staffPwErr').style.display = 'block';
+    document.getElementById('staffPwInput').value = '';
+    document.getElementById('staffPwInput').focus();
+  }
+}
+
+// ══════════════════════════════════════
+// 비번 변경 (이 기기에서만)
+// ══════════════════════════════════════
+function changeAdminPw() {
+  var np = document.getElementById('new-admin-pw').value.trim();
+  if (!np) return alert('새 비밀번호를 입력하세요.');
+  if (np.length < 4) return alert('비밀번호는 4자 이상이어야 합니다.');
+  ADMIN_PW = np;
+  localStorage.setItem('wonmu_admin_pw', np);
+  document.getElementById('new-admin-pw').value = '';
+  document.getElementById('cur-admin-pw').textContent = '클릭하여 표시';
+  alert('관리자 비번이 변경되었습니다.\n전체 반영은 코드 수정이 필요합니다.');
+}
+function changeStaffPw() {
+  var np = document.getElementById('new-staff-pw').value.trim();
+  if (!np) return alert('새 비밀번호를 입력하세요.');
+  if (np.length < 4) return alert('비밀번호는 4자 이상이어야 합니다.');
+  STAFF_PW = np;
+  localStorage.setItem('wonmu_staff_pw', np);
+  document.getElementById('new-staff-pw').value = '';
+  document.getElementById('cur-staff-pw').textContent = '클릭하여 표시';
+  alert('직원 비번이 변경되었습니다.\n전체 반영은 코드 수정이 필요합니다.');
 }
 
 // ══════════════════════════════════════
