@@ -186,6 +186,16 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
 .footer b{color:#fff;font-weight:600;}
 .footer a{color:rgba(255,255,255,.7);text-decoration:underline;}
 
+/* 서식 에디터 */
+.editor-toolbar{display:flex;align-items:center;gap:4px;flex-wrap:wrap;padding:8px 10px;background:var(--g100);border:1.5px solid var(--g200);border-bottom:none;border-radius:8px 8px 0 0;}
+.ed-btn{padding:4px 10px;border-radius:6px;border:1px solid var(--g200);background:#fff;font-family:'Noto Sans KR',sans-serif;font-size:13px;cursor:pointer;transition:all .15s;color:var(--g800);}
+.ed-btn:hover{background:var(--blue-light);border-color:var(--blue);color:var(--blue);}
+.ed-sel{height:30px;border:1px solid var(--g200);border-radius:6px;padding:0 8px;font-size:12px;font-family:'Noto Sans KR',sans-serif;background:#fff;color:var(--g800);cursor:pointer;}
+.ed-sep{width:1px;height:20px;background:var(--g200);margin:0 2px;flex-shrink:0;}
+.editor-body{min-height:120px;border:1.5px solid var(--g200);border-radius:0 0 8px 8px;padding:12px 14px;font-size:13px;font-family:'Noto Sans KR',sans-serif;color:var(--g800);outline:none;line-height:1.8;transition:border .2s;}
+.editor-body:focus{border-color:var(--blue);}
+.editor-body:empty:before{content:attr(placeholder);color:var(--g400);pointer-events:none;}
+
 @media(max-width:640px){
   .hdr{padding:14px 16px;} .hdr h1{font-size:13px;} .hdr-r{display:none;}
   .main{padding:16px;} .stats{grid-template-columns:repeat(3,1fr);}
@@ -201,7 +211,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
     <div class="hdr-icon">🏥</div>
     <div>
       <h1>한림대학교성심병원 원무팀 민원 대응 자료 검색</h1>
-      <p>고시·법령·해석사례·내부지침 통합 검색 시스템 <span style="opacity:.5;font-size:10px;">v4.6</span></p>
+      <p>고시·법령·해석사례·내부지침 통합 검색 시스템 <span style="opacity:.5;font-size:10px;">v4.7</span></p>
     </div>
   </div>
   <div class="hdr-r">
@@ -217,8 +227,8 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
 <div class="main">
   <div class="tab-nav">
     <button class="tab-btn on" id="tb-search"   onclick="goTab('search')">🔍 자료 검색</button>
+    <button class="tab-btn"   id="tb-refs"      onclick="goTab('refs')">🔗 참고 링크</button>
     <button class="tab-btn"   id="tb-register"  onclick="requireStaff(function(){goTab('register');})">➕ 자료 등록</button>
-    <button class="tab-btn"   id="tb-refs"      onclick="requireStaff(function(){goTab('refs');})">🔗 참고자료</button>
     <button class="tab-btn"   id="tb-admin"     onclick="requireAdmin(function(){goTab('admin');})">🔐 관리자</button>
     <button class="tab-btn"   id="tb-guide"     onclick="goTab('guide')">📖 가이드</button>
   </div>
@@ -263,10 +273,33 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
           <input class="f-input" id="r-kw" placeholder="진찰료, 진단서, 발급비용">
         </div>
         <div class="f-group full">
-          <label class="f-label">요약 <span style="font-weight:400;color:var(--g400)">(최대 500자)</span></label>
-          <textarea class="f-ta" id="r-desc" placeholder="민원 대응 시 활용할 핵심 내용을 요약해주세요." maxlength="500"
-            oninput="document.getElementById('r-cc').textContent=this.value.length+' / 500';"></textarea>
-          <div class="char-c" id="r-cc">0 / 500</div>
+          <label class="f-label">요약 <span style="font-weight:400;color:var(--g400)">(서식 적용 가능)</span></label>
+          <div class="editor-toolbar">
+            <button type="button" class="ed-btn" onclick="edCmd('bold')" title="굵게"><b>B</b></button>
+            <button type="button" class="ed-btn" onclick="edCmd('italic')" title="기울임"><i>I</i></button>
+            <button type="button" class="ed-btn" onclick="edCmd('underline')" title="밑줄"><u>U</u></button>
+            <span class="ed-sep"></span>
+            <select class="ed-sel" onchange="edCmd('fontSize',this.value);this.value=''" title="글자크기">
+              <option value="">크기</option>
+              <option value="2">소</option>
+              <option value="3">중</option>
+              <option value="4">대</option>
+              <option value="5">특대</option>
+            </select>
+            <span class="ed-sep"></span>
+            <label class="ed-btn" title="글자색" style="cursor:pointer;">
+              색 <input type="color" style="width:0;height:0;opacity:0;position:absolute;" onchange="edCmd('foreColor',this.value)">
+            </label>
+            <label class="ed-btn" title="배경색" style="cursor:pointer;">
+              형광 <input type="color" style="width:0;height:0;opacity:0;position:absolute;" onchange="edCmd('hiliteColor',this.value)">
+            </label>
+            <span class="ed-sep"></span>
+            <button type="button" class="ed-btn" onclick="edCmd('removeFormat')" title="서식 제거">✕서식</button>
+          </div>
+          <div class="editor-body" id="r-desc" contenteditable="true"
+            placeholder="민원 대응 시 활용할 핵심 내용을 요약해주세요."
+            oninput="updateEditorCount()"></div>
+          <div class="char-c" id="r-cc">0자</div>
         </div>
         <div class="f-group">
           <label class="f-label">분류 <span class="f-req">*</span></label>
@@ -297,15 +330,23 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
     </div>
   </div>
 
-  <!-- 참고자료 -->
+  <!-- 참고 링크 (열람 공개) -->
   <div class="pane" id="pane-refs">
-    <div style="background:#fff;border-radius:16px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:16px;">
-      <div style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:6px;">🔗 참고자료 등록</div>
-      <div style="font-size:13px;color:var(--g400);margin-bottom:20px;">자주 참고하는 홈페이지나 문서 URL을 등록해 빠르게 접근하세요.</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+      <div>
+        <div style="font-size:16px;font-weight:700;color:var(--navy);">🔗 참고 링크</div>
+        <div style="font-size:12px;color:var(--g400);margin-top:2px;">자주 참고하는 홈페이지·법령·고시 사이트 모음</div>
+      </div>
+      <button class="btn btn-success btn-sm" onclick="requireStaff(function(){openRefForm();})">＋ 링크 등록</button>
+    </div>
+
+    <!-- 등록 폼 (직원 인증 후 표시) -->
+    <div id="refFormWrap" style="display:none;background:#fff;border-radius:14px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:16px;border:2px solid var(--mint);">
+      <div style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:16px;">＋ 새 링크 등록</div>
       <div class="fg">
         <div class="f-group full"><label class="f-label">제목 <span class="f-req">*</span></label><input class="f-input" id="rf-title" placeholder="예: 건강보험심사평가원 비급여 공개 현황"></div>
         <div class="f-group full"><label class="f-label">URL <span class="f-req">*</span></label><input class="f-input" id="rf-url" placeholder="https://www.hira.or.kr/..."></div>
-        <div class="f-group full"><label class="f-label">설명 <span style="font-weight:400;color:var(--g400)">(선택)</span></label><input class="f-input" id="rf-desc" placeholder="어떤 자료인지 간단히 설명"></div>
+        <div class="f-group full"><label class="f-label">설명 <span style="font-weight:400;color:var(--g400)">(선택)</span></label><input class="f-input" id="rf-desc" placeholder="어떤 사이트인지 간단히 설명"></div>
         <div class="f-group">
           <label class="f-label">분류</label>
           <select class="f-sel" id="rf-cat">
@@ -318,10 +359,12 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
           </select>
         </div>
       </div>
-      <div style="display:flex;justify-content:flex-end;margin-top:16px;padding-top:16px;border-top:1px solid var(--g200);">
-        <button class="btn btn-success" onclick="addRef()">＋ 등록</button>
+      <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:16px;padding-top:16px;border-top:1px solid var(--g200);">
+        <button class="btn btn-outline" onclick="closeRefForm()">취소</button>
+        <button class="btn btn-success" onclick="addRef()">등록</button>
       </div>
     </div>
+
     <div id="refList"></div>
   </div>
 
@@ -449,7 +492,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
 </div>
 
 <div class="footer">
-  <b>한림대학교성심병원 원무팀</b> 민원 대응 자료 검색 시스템 v4.6<br>
+  <b>한림대학교성심병원 원무팀</b> 민원 대응 자료 검색 시스템 v4.7<br>
   개발·문의: <b>김영선</b> &nbsp;|&nbsp; <a href="mailto:4goon@hallym.or.kr">4goon@hallym.or.kr</a>
 </div>
 
@@ -688,7 +731,7 @@ function submitData() {
   setSubmitBtn(true);
   callScript({
     action: 'add', title: title, keywords: kw,
-    desc:   document.getElementById('r-desc').value.trim(),
+    desc:   getEditorHTML(),
     source: document.getElementById('r-src').value.trim(),
     type:   document.getElementById('r-type').value,
     link1:  document.getElementById('r-link1').value.trim(),
@@ -734,12 +777,12 @@ function showMsg(type, text) {
   el.style.display = 'block';
 }
 function resetForm() {
-  ['r-title','r-kw','r-desc','r-src','r-link1','r-link2','r-link3'].forEach(function(id){
+  ['r-title','r-kw','r-src','r-link1','r-link2','r-link3'].forEach(function(id){
     document.getElementById(id).value='';
   });
+  clearEditor();
   document.getElementById('r-type').value = cats.length ? cats[0].name : '';
   document.getElementById('r-user').value = '';
-  document.getElementById('r-cc').textContent = '0 / 500';
   document.getElementById('regMsg').style.display = 'none';
 }
 
@@ -1124,7 +1167,7 @@ function buildQuickTags(){
 // ══════════════════════════════════════
 // 탭 / 서브탭
 // ══════════════════════════════════════
-var TABS=['search','register','refs','admin','guide'];
+var TABS=['search','refs','register','admin','guide'];
 function goTab(name){
   TABS.forEach(function(n){
     document.getElementById('tb-'+n).classList.toggle('on',n===name);
@@ -1133,7 +1176,43 @@ function goTab(name){
 }
 
 // ══════════════════════════════════════
-// 참고자료
+// 서식 에디터
+// ══════════════════════════════════════
+function edCmd(cmd, val) {
+  document.getElementById('r-desc').focus();
+  document.execCommand(cmd, false, val !== undefined ? val : null);
+  updateEditorCount();
+}
+function updateEditorCount() {
+  var el = document.getElementById('r-desc');
+  document.getElementById('r-cc').textContent = (el ? el.innerText.length : 0) + '자';
+}
+function getEditorHTML() {
+  var el = document.getElementById('r-desc');
+  return el ? el.innerHTML : '';
+}
+function clearEditor() {
+  var el = document.getElementById('r-desc');
+  if (el) el.innerHTML = '';
+  document.getElementById('r-cc').textContent = '0자';
+}
+
+// ══════════════════════════════════════
+// 참고 링크 폼 열기/닫기
+// ══════════════════════════════════════
+function openRefForm() {
+  document.getElementById('refFormWrap').style.display = 'block';
+  document.getElementById('rf-title').focus();
+}
+function closeRefForm() {
+  document.getElementById('refFormWrap').style.display = 'none';
+  ['rf-title','rf-url','rf-desc'].forEach(function(id){
+    document.getElementById(id).value = '';
+  });
+}
+
+// ══════════════════════════════════════
+// 참고 링크
 // ══════════════════════════════════════
 var refs = JSON.parse(localStorage.getItem('wonmu_refs') || '[]');
 function saveRefs(){ localStorage.setItem('wonmu_refs', JSON.stringify(refs)); }
@@ -1175,7 +1254,7 @@ function renderRefs() {
       +'</div></div>'
       +'<div class="ref-acts">'
       +'<a href="'+r.url+'" target="_blank" class="btn btn-primary btn-sm" style="text-decoration:none;">바로가기</a>'
-      +'<button class="btn btn-danger btn-sm" onclick="delRef('+i+')">삭제</button>'
+      +'<button class="btn btn-danger btn-sm" onclick="requireStaff(function(){delRef('+i+');})">삭제</button>'
       +'</div></div>';
   }).join('');
 }
