@@ -225,7 +225,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
     <div class="hdr-icon">🏥</div>
     <div>
       <h1>한림대학교성심병원 원무팀 민원 자료 검색</h1>
-      <p>고시·법령·해석사례·내부지침 통합 검색 시스템 <span style="opacity:.5;font-size:10px;">v5.1</span></p>
+      <p>고시·법령·해석사례·내부지침 통합 검색 시스템 <span style="opacity:.5;font-size:10px;">v5.2</span></p>
     </div>
   </div>
   <div class="hdr-r">
@@ -493,7 +493,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
 </div>
 
 <div class="footer">
-  <b>한림대학교성심병원 원무팀</b> 민원 자료 검색 시스템 v5.1<br>
+  <b>한림대학교성심병원 원무팀</b> 민원 자료 검색 시스템 v5.2<br>
   개발·문의: <b>김영선</b> &nbsp;|&nbsp; <a href="mailto:4goon@hallym.or.kr">4goon@hallym.or.kr</a>
 </div>
 
@@ -731,6 +731,7 @@ function applyFont(targetId, fontName) {
 function applyColor(targetId, cmd, color) {
   var el = document.getElementById(targetId);
   el.focus();
+  var sel = window.getSelection();
   if (!sel || sel.rangeCount === 0 || sel.toString() === '') {
     alert('색상을 적용할 텍스트를 먼저 드래그하여 선택하세요.');
     return;
@@ -740,9 +741,13 @@ function applyColor(targetId, cmd, color) {
 }
 
 function edCmd(targetId, cmd, val) {
-  document.getElementById(targetId).focus();
-  document.execCommand(cmd, false, val !== undefined ? val : null);
-  updateCount(targetId, targetId === 'r-desc' ? 'r-cc' : 'e-cc');
+  var el = document.getElementById(targetId);
+  el.focus();
+  // 모달 안에서 포커스 확보 후 실행
+  setTimeout(function() {
+    document.execCommand(cmd, false, val !== undefined ? val : null);
+    updateCount(targetId, targetId === 'r-desc' ? 'r-cc' : 'e-cc');
+  }, 0);
 }
 
 function updateCount(edId, cntId) {
