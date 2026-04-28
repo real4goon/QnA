@@ -47,8 +47,9 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
 
 .main{max-width:980px;margin:0 auto;padding:24px;flex:1;width:100%;}
 
-.tab-nav{display:flex;border-bottom:2px solid var(--g200);margin-bottom:24px;}
-.tab-btn{padding:10px 20px;border:none;background:none;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:500;color:var(--g400);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;}
+.tab-nav{display:flex;border-bottom:2px solid var(--g200);margin-bottom:24px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.tab-nav::-webkit-scrollbar{display:none;}
+.tab-btn{padding:10px 16px;border:none;background:none;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:500;color:var(--g400);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;white-space:nowrap;flex-shrink:0;}
 .tab-btn.on{color:var(--blue);border-color:var(--blue);font-weight:700;}
 .pane{display:none;}
 .pane.on{display:block;}
@@ -158,7 +159,16 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
 
 .code{background:var(--g100);border-radius:8px;padding:8px 12px;font-family:monospace;font-size:12px;color:var(--navy);margin-top:6px;word-break:break-all;}
 
-.guide-box{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,.07);}
+/* 참고자료 */
+.ref-card{background:#fff;border-radius:12px;border:1px solid var(--g200);padding:16px 20px;margin-bottom:10px;display:flex;align-items:flex-start;gap:14px;transition:all .2s;}
+.ref-card:hover{box-shadow:0 2px 10px rgba(0,0,0,.08);border-color:var(--blue);}
+.ref-icon{width:40px;height:40px;border-radius:10px;background:var(--blue-light);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.ref-info{flex:1;min-width:0;}
+.ref-title{font-size:14px;font-weight:700;color:var(--g800);margin-bottom:4px;}
+.ref-desc{font-size:12px;color:var(--g400);margin-bottom:8px;line-height:1.6;}
+.ref-url{font-size:11px;color:var(--blue);text-decoration:none;word-break:break-all;}
+.ref-url:hover{text-decoration:underline;}
+.ref-acts{display:flex;flex-direction:column;gap:6px;flex-shrink:0;}
 .g-step{margin-bottom:22px;}
 .g-title{font-size:14px;font-weight:600;color:var(--g800);display:flex;align-items:center;margin-bottom:8px;}
 .g-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;font-size:12px;font-weight:700;margin-right:8px;flex-shrink:0;}
@@ -191,7 +201,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
     <div class="hdr-icon">🏥</div>
     <div>
       <h1>한림대학교성심병원 원무팀 민원 대응 자료 검색</h1>
-      <p>고시·법령·해석사례·내부지침 통합 검색 시스템 <span style="opacity:.5;font-size:10px;">v4.4</span></p>
+      <p>고시·법령·해석사례·내부지침 통합 검색 시스템 <span style="opacity:.5;font-size:10px;">v4.5</span></p>
     </div>
   </div>
   <div class="hdr-r">
@@ -208,6 +218,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
   <div class="tab-nav">
     <button class="tab-btn on" id="tb-search"   onclick="goTab('search')">🔍 자료 검색</button>
     <button class="tab-btn"   id="tb-register"  onclick="goTab('register')">➕ 자료 등록</button>
+    <button class="tab-btn"   id="tb-refs"      onclick="goTab('refs')">🔗 참고자료</button>
     <button class="tab-btn"   id="tb-admin"     onclick="requireAdmin(function(){goTab('admin');})">🔐 관리자</button>
     <button class="tab-btn"   id="tb-guide"     onclick="goTab('guide')">📖 가이드</button>
   </div>
@@ -286,6 +297,34 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
     </div>
   </div>
 
+  <!-- 참고자료 -->
+  <div class="pane" id="pane-refs">
+    <div style="background:#fff;border-radius:16px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:16px;">
+      <div style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:6px;">🔗 참고자료 등록</div>
+      <div style="font-size:13px;color:var(--g400);margin-bottom:20px;">자주 참고하는 홈페이지나 문서 URL을 등록해 빠르게 접근하세요.</div>
+      <div class="fg">
+        <div class="f-group full"><label class="f-label">제목 <span class="f-req">*</span></label><input class="f-input" id="rf-title" placeholder="예: 건강보험심사평가원 비급여 공개 현황"></div>
+        <div class="f-group full"><label class="f-label">URL <span class="f-req">*</span></label><input class="f-input" id="rf-url" placeholder="https://www.hira.or.kr/..."></div>
+        <div class="f-group full"><label class="f-label">설명 <span style="font-weight:400;color:var(--g400)">(선택)</span></label><input class="f-input" id="rf-desc" placeholder="어떤 자료인지 간단히 설명"></div>
+        <div class="f-group">
+          <label class="f-label">분류</label>
+          <select class="f-sel" id="rf-cat">
+            <option value="🏥 건강보험">🏥 건강보험</option>
+            <option value="⚖️ 법령">⚖️ 법령</option>
+            <option value="🏛 정부기관">🏛 정부기관</option>
+            <option value="📋 고시·기준">📋 고시·기준</option>
+            <option value="📌 내부자료">📌 내부자료</option>
+            <option value="🔖 기타">🔖 기타</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-top:16px;padding-top:16px;border-top:1px solid var(--g200);">
+        <button class="btn btn-success" onclick="addRef()">＋ 등록</button>
+      </div>
+    </div>
+    <div id="refList"></div>
+  </div>
+
   <!-- 관리자 -->
   <div class="pane" id="pane-admin">
     <div class="stats">
@@ -345,6 +384,19 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
         <div class="code" style="margin-top:12px;">시트명: 민원자료 | 열: 등록일·제목·키워드·요약·출처·분류·링크1·링크2·링크3·등록자</div>
         <div class="f-hint" style="margin-top:8px;">※ "민원자료" 탭을 웹에 게시해야 합니다. (파일 → 공유 → 웹에 게시)</div>
       </div>
+
+      <div class="s-box">
+        <div class="s-box-title">📋 주요 설정값 (개발자 참고용)</div>
+        <div style="font-size:12px;color:var(--g600);line-height:2;">
+          <div><b>관리자 비번:</b> <span id="show-pw" style="font-family:monospace;background:var(--g100);padding:2px 8px;border-radius:4px;cursor:pointer;" onclick="this.textContent=ADMIN_PW">클릭하여 표시</span></div>
+          <div style="margin-top:6px;"><b>시트 ID:</b></div>
+          <div class="code" id="show-sid" style="margin-top:4px;word-break:break-all;"></div>
+          <div style="margin-top:8px;"><b>Apps Script URL:</b></div>
+          <div class="code" style="margin-top:4px;word-break:break-all;font-size:11px;">https://script.google.com/macros/s/AKfycbwVFTPV1FiDH3MvNKHxTFkeS2vUZAhKVJa4dwtU_7ALNc9C8W-sY--8K9-bLVd0kXAJzA/exec</div>
+          <div style="margin-top:8px;"><b>GitHub 배포 주소:</b></div>
+          <div class="code" style="margin-top:4px;"><a href="https://real4goon.github.io/wonmu-search/" target="_blank" style="color:var(--blue);">https://real4goon.github.io/wonmu-search/</a></div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -373,7 +425,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
 </div>
 
 <div class="footer">
-  <b>한림대학교성심병원 원무팀</b> 민원 대응 자료 검색 시스템 v4.3<br>
+  <b>한림대학교성심병원 원무팀</b> 민원 대응 자료 검색 시스템 v4.5<br>
   개발·문의: <b>김영선</b> &nbsp;|&nbsp; <a href="mailto:4goon@hallym.or.kr">4goon@hallym.or.kr</a>
 </div>
 
@@ -447,16 +499,19 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
 
 <script>
 // ══════════════════════════════════════
-// 설정
+// 설정 — 시트 ID는 여기서 직접 관리
 // ══════════════════════════════════════
 var ADMIN_PW   = '4041';
 var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwVFTPV1FiDH3MvNKHxTFkeS2vUZAhKVJa4dwtU_7ALNc9C8W-sY--8K9-bLVd0kXAJzA/exec';
 var SHEET_NAME = '민원자료';
+// ↓ 시트 ID 변경 시 여기만 수정
+var DEFAULT_SHEET_ID = '1WAx5fhY0CmwIV7A_QUBzx1aFZBqO2Ko_diEJDwqYYh0';
 
 // ══════════════════════════════════════
 // 상태
 // ══════════════════════════════════════
-var SHEET_ID = localStorage.getItem('wonmu_sid') || '';
+// localStorage 저장값 있으면 우선 사용, 없으면 기본값 사용
+var SHEET_ID = localStorage.getItem('wonmu_sid') || DEFAULT_SHEET_ID;
 var items    = [];
 var selCat   = '전체';
 var isAdmin  = false;
@@ -500,7 +555,12 @@ function parseDate(raw) {
 // 초기화
 // ══════════════════════════════════════
 document.addEventListener('DOMContentLoaded', function() {
-  items = SAMPLE.slice();
+  // 시트 ID 있으면 샘플 표시 안 함, 로딩 상태로 시작
+  if (SHEET_ID) {
+    items = [];
+  } else {
+    items = SAMPLE.slice();
+  }
   buildQuickTags();
   renderCatBtns();
   renderCatDropdowns();
@@ -508,11 +568,15 @@ document.addEventListener('DOMContentLoaded', function() {
   refreshAll();
   renderStaffList();
   refreshUserDropdown();
+  renderRefs();
 
   if (SHEET_ID) {
     document.getElementById('sheetId').value = SHEET_ID;
     document.getElementById('curSheet').textContent = SHEET_ID;
     document.getElementById('sheetLink').href = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID;
+    // 로딩 중 표시
+    document.getElementById('emptyTitle').textContent = '자료를 불러오는 중...';
+    document.getElementById('emptyDesc').textContent = '잠시만 기다려주세요.';
     loadSheet();
   }
 });
@@ -1012,12 +1076,60 @@ function buildQuickTags(){
 // ══════════════════════════════════════
 // 탭 / 서브탭
 // ══════════════════════════════════════
-var TABS=['search','register','admin','guide'];
+var TABS=['search','register','refs','admin','guide'];
 function goTab(name){
   TABS.forEach(function(n){
     document.getElementById('tb-'+n).classList.toggle('on',n===name);
     document.getElementById('pane-'+n).classList.toggle('on',n===name);
   });
+}
+
+// ══════════════════════════════════════
+// 참고자료
+// ══════════════════════════════════════
+var refs = JSON.parse(localStorage.getItem('wonmu_refs') || '[]');
+function saveRefs(){ localStorage.setItem('wonmu_refs', JSON.stringify(refs)); }
+function addRef() {
+  var title = document.getElementById('rf-title').value.trim();
+  var url   = document.getElementById('rf-url').value.trim();
+  if (!title) return alert('제목을 입력하세요.');
+  if (!url)   return alert('URL을 입력하세요.');
+  if (!/^https?:\/\//.test(url)) return alert('URL은 http:// 또는 https:// 로 시작해야 합니다.');
+  refs.unshift({title:title, url:url, desc:document.getElementById('rf-desc').value.trim(), cat:document.getElementById('rf-cat').value, date:new Date().toISOString().slice(0,10)});
+  saveRefs();
+  document.getElementById('rf-title').value='';
+  document.getElementById('rf-url').value='';
+  document.getElementById('rf-desc').value='';
+  renderRefs();
+}
+function delRef(i) {
+  if (!confirm('"'+refs[i].title+'" 을 삭제하시겠습니까?')) return;
+  refs.splice(i,1); saveRefs(); renderRefs();
+}
+function renderRefs() {
+  var el = document.getElementById('refList');
+  if (!el) return;
+  if (!refs.length) {
+    el.innerHTML='<div class="empty"><div class="empty-icon">🔗</div><h3>등록된 참고자료가 없습니다</h3><p>자주 방문하는 홈페이지나 문서 URL을 등록해두세요.</p></div>';
+    return;
+  }
+  el.innerHTML = refs.map(function(r,i){
+    var icon = r.cat ? r.cat.split(' ')[0] : '🔖';
+    return '<div class="ref-card">'
+      +'<div class="ref-icon">'+icon+'</div>'
+      +'<div class="ref-info">'
+      +'<div class="ref-title">'+r.title+'</div>'
+      +(r.desc?'<div class="ref-desc">'+r.desc+'</div>':'')
+      +'<a class="ref-url" href="'+r.url+'" target="_blank">🌐 '+r.url+'</a>'
+      +'<div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;">'
+      +(r.cat?'<span class="chip">'+r.cat+'</span>':'')
+      +(r.date?'<span class="chip">🗓 '+r.date+'</span>':'')
+      +'</div></div>'
+      +'<div class="ref-acts">'
+      +'<a href="'+r.url+'" target="_blank" class="btn btn-primary btn-sm" style="text-decoration:none;">바로가기</a>'
+      +'<button class="btn btn-danger btn-sm" onclick="delRef('+i+')">삭제</button>'
+      +'</div></div>';
+  }).join('');
 }
 var SUBS=['list','cats','staff','settings'];
 function goSub(name,btn){
@@ -1025,6 +1137,12 @@ function goSub(name,btn){
     document.getElementById('sb-'+n).classList.toggle('on',n===name);
     document.getElementById('sp-'+n).classList.toggle('on',n===name);
   });
+  if(name==='settings'){
+    var el=document.getElementById('show-sid');
+    if(el) el.textContent=SHEET_ID||'(없음)';
+    var pw=document.getElementById('show-pw');
+    if(pw) pw.textContent='클릭하여 표시';
+  }
 }
 
 // ══════════════════════════════════════
