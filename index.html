@@ -119,6 +119,10 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
 .ed-btn:hover{background:var(--blue-light);border-color:var(--blue);color:var(--blue);}
 .ed-sel{height:28px;border:1px solid var(--g200);border-radius:6px;padding:0 6px;font-size:12px;font-family:'Noto Sans KR',sans-serif;background:#fff;color:var(--g800);cursor:pointer;}
 .ed-sep{width:1px;height:18px;background:var(--g200);margin:0 2px;flex-shrink:0;}
+.ed-color-wrap{position:relative;display:inline-flex;align-items:center;}
+.ed-color-btn{padding:4px 10px;border-radius:6px;border:1px solid var(--g200);background:#fff;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:5px;height:28px;font-family:'Noto Sans KR',sans-serif;}
+.ed-color-btn:hover{background:var(--blue-light);border-color:var(--blue);}
+.ed-color-btn input[type=color]{width:18px;height:18px;border:none;padding:0;cursor:pointer;border-radius:3px;background:none;}
 .ed-body{min-height:110px;padding:12px 14px;font-size:13px;font-family:'Noto Sans KR',sans-serif;color:var(--g800);outline:none;line-height:1.8;background:#fff;}
 .ed-body:empty:before{content:attr(placeholder);color:var(--g400);pointer-events:none;}
 .ed-count{font-size:11px;color:var(--g400);text-align:right;padding:4px 10px;background:var(--g50);border-top:1px solid var(--g200);}
@@ -220,8 +224,8 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
   <div class="hdr-l">
     <div class="hdr-icon">🏥</div>
     <div>
-      <h1>한림대학교성심병원 원무팀 민원 대응 자료 검색</h1>
-      <p>고시·법령·해석사례·내부지침 통합 검색 시스템 <span style="opacity:.5;font-size:10px;">v4.8</span></p>
+      <h1>한림대학교성심병원 원무팀 민원 자료 검색</h1>
+      <p>고시·법령·해석사례·내부지침 통합 검색 시스템 <span style="opacity:.5;font-size:10px;">v4.9</span></p>
     </div>
   </div>
   <div class="hdr-r">
@@ -482,7 +486,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
 </div>
 
 <div class="footer">
-  <b>한림대학교성심병원 원무팀</b> 민원 대응 자료 검색 시스템 v4.8<br>
+  <b>한림대학교성심병원 원무팀</b> 민원 자료 검색 시스템 v4.9<br>
   개발·문의: <b>김영선</b> &nbsp;|&nbsp; <a href="mailto:4goon@hallym.or.kr">4goon@hallym.or.kr</a>
 </div>
 
@@ -628,22 +632,49 @@ var SAMPLE = [
 // 서식 에디터 툴바 생성
 // ══════════════════════════════════════
 function buildToolbar(targetId) {
+  var colors = ['#ef4444','#f97316','#eab308','#22c55e','#3b82f6','#8b5cf6','#ec4899','#000000'];
+  var colorBtns = colors.map(function(c){
+    return '<button type="button" onclick="applyColor(\''+targetId+'\',\'foreColor\',\''+c+'\')" '
+      +'style="width:18px;height:18px;border-radius:3px;border:1px solid rgba(0,0,0,.15);background:'+c+';cursor:pointer;padding:0;" title="'+c+'"></button>';
+  }).join('');
+  var hlColors = ['#fef08a','#bbf7d0','#bfdbfe','#fecaca','#e9d5ff'];
+  var hlBtns = hlColors.map(function(c){
+    return '<button type="button" onclick="applyColor(\''+targetId+'\',\'hiliteColor\',\''+c+'\')" '
+      +'style="width:18px;height:18px;border-radius:3px;border:1px solid rgba(0,0,0,.15);background:'+c+';cursor:pointer;padding:0;" title="'+c+'"></button>';
+  }).join('');
+
   return '<button type="button" class="ed-btn" onclick="edCmd(\''+targetId+'\',\'bold\')" title="굵게"><b>B</b></button>'
     +'<button type="button" class="ed-btn" onclick="edCmd(\''+targetId+'\',\'italic\')" title="기울임"><i>I</i></button>'
     +'<button type="button" class="ed-btn" onclick="edCmd(\''+targetId+'\',\'underline\')" title="밑줄"><u>U</u></button>'
     +'<span class="ed-sep"></span>'
-    +'<select class="ed-sel" onchange="edCmd(\''+targetId+'\',\'fontSize\',this.value);this.selectedIndex=0;" title="글자크기">'
+    +'<select class="ed-sel" onchange="edCmd(\''+targetId+'\',\'fontSize\',this.value);this.selectedIndex=0;">'
     +'<option value="">크기</option><option value="2">소</option><option value="3">중</option><option value="4">대</option><option value="5">특대</option>'
     +'</select>'
     +'<span class="ed-sep"></span>'
-    +'<label class="ed-btn" title="글자색" style="cursor:pointer;position:relative;">색'
-    +'<input type="color" style="position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;cursor:pointer;" onchange="edCmd(\''+targetId+'\',\'foreColor\',this.value)">'
-    +'</label>'
-    +'<label class="ed-btn" title="형광펜" style="cursor:pointer;position:relative;">형광'
-    +'<input type="color" style="position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;cursor:pointer;" onchange="edCmd(\''+targetId+'\',\'hiliteColor\',this.value)">'
-    +'</label>'
+    +'<span style="font-size:11px;color:var(--g400);">색:</span>'
+    +colorBtns
+    +'<div class="ed-color-wrap"><div class="ed-color-btn" title="직접 선택">'
+    +'<span style="font-size:11px;">∷</span>'
+    +'<input type="color" value="#2563eb" onchange="applyColor(\''+targetId+'\',\'foreColor\',this.value)">'
+    +'</div></div>'
     +'<span class="ed-sep"></span>'
-    +'<button type="button" class="ed-btn" onclick="edCmd(\''+targetId+'\',\'removeFormat\')" title="서식 제거">✕서식</button>';
+    +'<span style="font-size:11px;color:var(--g400);">형광:</span>'
+    +hlBtns
+    +'<span class="ed-sep"></span>'
+    +'<button type="button" class="ed-btn" onclick="edCmd(\''+targetId+'\',\'removeFormat\')" title="서식 제거">✕</button>';
+}
+
+function applyColor(targetId, cmd, color) {
+  var el = document.getElementById(targetId);
+  el.focus();
+  // 선택 영역 없으면 전체 선택 안내
+  var sel = window.getSelection();
+  if (!sel || sel.rangeCount === 0 || sel.toString() === '') {
+    alert('색상을 적용할 텍스트를 먼저 드래그하여 선택하세요.');
+    return;
+  }
+  document.execCommand(cmd, false, color);
+  updateCount(targetId, targetId === 'r-desc' ? 'r-cc' : 'e-cc');
 }
 
 function edCmd(targetId, cmd, val) {
@@ -670,7 +701,6 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('edit-toolbar').innerHTML = buildToolbar('e-desc');
 
   items = SHEET_ID ? [] : SAMPLE.slice();
-  buildQuickTags();
   renderCatBtns();
   renderCatDropdowns();
   renderCatMgmt();
@@ -890,7 +920,7 @@ function setEmpty(t,d){
   document.getElementById('emptyTitle').textContent=t;
   document.getElementById('emptyDesc').textContent=d;
 }
-function refreshAll(){updateCatCounts();showCat();renderAdminCards();updateStats();}
+function refreshAll(){updateCatCounts();showCat();renderAdminCards();updateStats();buildQuickTags();}
 
 // ══════════════════════════════════════
 // 카드 렌더링
@@ -1136,10 +1166,16 @@ function setBanner(ok){
 }
 
 // ══════════════════════════════════════
-// 빠른 태그
+// 빠른 태그 (실제 등록 키워드에서 자동 추출)
 // ══════════════════════════════════════
 function buildQuickTags(){
-  document.getElementById('quickTags').innerHTML=QUICK.map(function(t){
+  var freq = {};
+  items.forEach(function(it){
+    it.kw.forEach(function(k){ if(k) freq[k] = (freq[k]||0)+1; });
+  });
+  var sorted = Object.keys(freq).sort(function(a,b){return freq[b]-freq[a];}).slice(0,12);
+  var el = document.getElementById('quickTags');
+  el.innerHTML = sorted.map(function(t){
     return '<span class="tag" onclick="document.getElementById(\'q\').value=\''+t+'\';onSearch()">'+t+'</span>';
   }).join('');
 }
