@@ -225,7 +225,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
     <div class="hdr-icon">🏥</div>
     <div>
       <h1>한림대학교성심병원 원무팀 민원 자료 검색</h1>
-      <p>고시·법령·해석사례·내부지침 통합 검색 시스템 <span style="opacity:.5;font-size:10px;">v5.2</span></p>
+      <p>고시·법령·해석사례·내부지침 통합 검색 시스템 <span style="opacity:.5;font-size:10px;">v5.3</span></p>
     </div>
   </div>
   <div class="hdr-r">
@@ -253,11 +253,20 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
       <div class="s-label">민원 키워드를 입력하세요</div>
       <div class="s-row">
         <input class="s-input" id="q" type="text"
-          placeholder="예: 진찰료, 진단서, 비급여, 입원확인서..."
+          placeholder="예: 진찰료 산정기준 (스페이스=AND, 쉼표=OR)"
           oninput="onSearch()" onkeydown="if(event.key==='Enter')onSearch()">
         <button class="s-btn" onclick="onSearch()">검색</button>
       </div>
+      <div style="font-size:11px;color:var(--g400);margin-top:8px;">
+        💡 <b>스페이스</b>로 구분 = AND (모두 포함) &nbsp;|&nbsp; <b>쉼표</b>로 구분 = OR (하나라도 포함)
+      </div>
       <div class="tags" id="quickTags"></div>
+    </div>
+
+    <!-- 파트별 필터 -->
+    <div class="cat-box" id="partBox" style="display:none;">
+      <div class="cat-title">🏷 파트별 필터</div>
+      <div class="cat-btns" id="partBtns"></div>
     </div>
     <div class="cat-box">
       <div class="cat-title">📂 분류별 탐색</div>
@@ -312,6 +321,10 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
         <div class="f-group">
           <label class="f-label">출처</label>
           <input class="f-input" id="r-src" placeholder="보건복지부 고시 제2023-XXX호">
+        </div>
+        <div class="f-group">
+          <label class="f-label">파트 <span style="font-weight:400;color:var(--g400)">(주제 묶음)</span></label>
+          <input class="f-input" id="r-part" placeholder="예: 진찰료, 비급여, 제증명">
         </div>
         <div class="f-group">
           <label class="f-label">등록자 <span class="f-req">*</span></label>
@@ -493,7 +506,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
 </div>
 
 <div class="footer">
-  <b>한림대학교성심병원 원무팀</b> 민원 자료 검색 시스템 v5.2<br>
+  <b>한림대학교성심병원 원무팀</b> 민원 자료 검색 시스템 v5.3<br>
   개발·문의: <b>김영선</b> &nbsp;|&nbsp; <a href="mailto:4goon@hallym.or.kr">4goon@hallym.or.kr</a>
 </div>
 
@@ -572,6 +585,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--g50);color:var(--g80
         </div>
       </div>
       <div class="f-group"><label class="f-label">분류</label><select class="f-sel" id="e-type"></select></div>
+      <div class="f-group"><label class="f-label">파트</label><input class="f-input" id="e-part" placeholder="예: 진찰료, 비급여"></div>
       <div class="f-group"><label class="f-label">출처</label><input class="f-input" id="e-src"></div>
       <div class="f-group"><label class="f-label">등록자</label><select class="f-sel" id="e-user"><option value="">-- 선택 --</option></select></div>
       <div class="f-group full">
@@ -802,9 +816,12 @@ function loadSheet() {
       if(cv(row,6))links.push(cv(row,6));
       if(cv(row,7))links.push(cv(row,7));
       if(cv(row,8))links.push(cv(row,8));
-      return {date:parseDate(cv(row,0)),title:cv(row,1),
+      return {
+        date:parseDate(cv(row,0)), title:cv(row,1),
         kw:(cv(row,2)||'').split(',').map(function(k){return k.trim();}).filter(Boolean),
-        desc:cv(row,3),src:cv(row,4),type:cv(row,5)||'지침·FAQ',links:links,user:cv(row,9)};
+        desc:cv(row,3), src:cv(row,4), type:cv(row,5)||'지침·FAQ',
+        links:links, user:cv(row,9), part:cv(row,10)
+      };
     }).filter(function(it){return it.title;});
     setBanner(true);
     refreshAll();
@@ -837,7 +854,8 @@ function submitData() {
     link1:document.getElementById('r-link1').value.trim(),
     link2:document.getElementById('r-link2').value.trim(),
     link3:document.getElementById('r-link3').value.trim(),
-    regUser:user},
+    regUser:user,
+    part:document.getElementById('r-part').value.trim()},
   function(){
     showMsg('ok','✅ 전송 완료! 3초 후 반영 여부를 자동 확인합니다...');
     resetRegForm(); setSubmitBtn(false);
@@ -864,7 +882,7 @@ function showMsg(type,text){
   el.className='msg '+type; el.textContent=text; el.style.display='block';
 }
 function resetRegForm(){
-  ['r-title','r-kw','r-src','r-link1','r-link2','r-link3'].forEach(function(id){document.getElementById(id).value='';});
+  ['r-title','r-kw','r-src','r-link1','r-link2','r-link3','r-part'].forEach(function(id){document.getElementById(id).value='';});
   clearEditor('r-desc','r-cc');
   if(cats.length)document.getElementById('r-type').value=cats[0].name;
   document.getElementById('r-user').value='';
@@ -880,6 +898,7 @@ function openEdit(idx){
   document.getElementById('e-title').value=it.title;
   document.getElementById('e-kw').value=it.kw.join(', ');
   setHTML('e-desc', it.desc); updateCount('e-desc','e-cc');
+  document.getElementById('e-part').value = it.part||'';
   document.getElementById('e-src').value=it.src;
   document.getElementById('e-link1').value=it.links[0]||'';
   document.getElementById('e-link2').value=it.links[1]||'';
@@ -906,7 +925,8 @@ function saveEdit(){
     link1:document.getElementById('e-link1').value.trim(),
     link2:document.getElementById('e-link2').value.trim(),
     link3:document.getElementById('e-link3').value.trim(),
-    regUser:document.getElementById('e-user').value},
+    regUser:document.getElementById('e-user').value,
+    part:document.getElementById('e-part').value.trim()},
   function(){btn.disabled=false;btn.innerHTML='💾 저장';closeOv('editOverlay');setTimeout(loadSheet,1500);},
   function(){btn.disabled=false;btn.innerHTML='💾 저장';alert('저장 실패. 다시 시도하세요.');});
 }
@@ -943,30 +963,85 @@ function callScript(payload, onOk, onErr) {
 }
 
 // ══════════════════════════════════════
-// 검색
+// 검색 (스페이스=AND, 쉼표=OR)
 // ══════════════════════════════════════
+var selPart = '전체';
+
 function onSearch(){
-  var q=document.getElementById('q').value.trim();
+  var q = document.getElementById('q').value.trim();
   if(!q){
-    selCat='전체';
+    selCat='전체'; selPart='전체';
     document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('on');});
     var f=document.querySelector('.cat-btn'); if(f)f.classList.add('on');
     showCat(); return;
   }
-  var tokens=q.toLowerCase().split(/[\s,]+/).filter(Boolean);
-  var scored=items.map(function(it){
-    var score=0;
-    var full=[it.title].concat(it.kw).concat([it.desc.replace(/<[^>]+>/g,''),it.src]).join(' ').toLowerCase();
-    tokens.forEach(function(t){
-      it.kw.forEach(function(k){if(k.toLowerCase().includes(t)||t.includes(k.toLowerCase()))score+=3;});
-      if(it.title.toLowerCase().includes(t))score+=2;
-      if(full.includes(t))score+=1;
-    });
-    return Object.assign({},it,{score:score,hits:tokens});
-  }).filter(function(it){return it.score>0;}).sort(function(a,b){return b.score-a.score;});
-  renderResults(scored,'검색 결과 <span>'+scored.length+'건</span>',
-    scored.length?'':'관련 자료를 찾지 못했습니다',
-    scored.length?'':'다른 키워드로 검색하거나 ➕ 자료 등록 탭에서 등록해주세요.');
+
+  var results;
+  if (q.indexOf(',') >= 0) {
+    // 쉼표 구분 → OR: 하나라도 포함
+    var orTokens = q.split(',').map(function(t){return t.trim().toLowerCase();}).filter(Boolean);
+    results = items.map(function(it){
+      var score=0;
+      var full=[it.title].concat(it.kw).concat([it.desc.replace(/<[^>]+>/g,''),it.src,it.part||'']).join(' ').toLowerCase();
+      orTokens.forEach(function(t){
+        it.kw.forEach(function(k){if(k.toLowerCase().includes(t)||t.includes(k.toLowerCase()))score+=3;});
+        if(it.title.toLowerCase().includes(t))score+=2;
+        if(full.includes(t))score+=1;
+      });
+      return Object.assign({},it,{score:score,hits:orTokens,searchMode:'OR'});
+    }).filter(function(it){return it.score>0;}).sort(function(a,b){return b.score-a.score;});
+  } else {
+    // 스페이스 구분 → AND: 모두 포함
+    var andTokens = q.split(/\s+/).filter(Boolean).map(function(t){return t.toLowerCase();});
+    results = items.map(function(it){
+      var full=[it.title].concat(it.kw).concat([it.desc.replace(/<[^>]+>/g,''),it.src,it.part||'']).join(' ').toLowerCase();
+      var allMatch = andTokens.every(function(t){
+        return it.kw.some(function(k){return k.toLowerCase().includes(t)||t.includes(k.toLowerCase());})
+          || it.title.toLowerCase().includes(t)
+          || full.includes(t);
+      });
+      if(!allMatch) return null;
+      var score = andTokens.reduce(function(s,t){
+        it.kw.forEach(function(k){if(k.toLowerCase().includes(t))s+=3;});
+        if(it.title.toLowerCase().includes(t))s+=2;
+        return s+1;
+      },0);
+      return Object.assign({},it,{score:score,hits:andTokens,searchMode:'AND'});
+    }).filter(Boolean).sort(function(a,b){return b.score-a.score;});
+  }
+
+  var modeLabel = results.length && results[0].searchMode==='AND'
+    ? ' <span style="font-size:12px;color:var(--g400);">(AND 검색)</span>'
+    : ' <span style="font-size:12px;color:var(--g400);">(OR 검색)</span>';
+  renderResults(results,
+    '검색 결과 <span>'+results.length+'건</span>'+modeLabel,
+    results.length?'':'관련 자료를 찾지 못했습니다',
+    results.length?'':'다른 키워드로 검색하거나 ➕ 자료 등록 탭에서 등록해주세요.');
+}
+
+// ══════════════════════════════════════
+// 파트 필터
+// ══════════════════════════════════════
+function buildPartBtns(){
+  var partSet = {};
+  items.forEach(function(it){ if(it.part) it.part.split(',').forEach(function(p){ p=p.trim(); if(p) partSet[p]=(partSet[p]||0)+1; }); });
+  var parts = Object.keys(partSet);
+  var box = document.getElementById('partBox');
+  var btns = document.getElementById('partBtns');
+  if(!parts.length){ box.style.display='none'; return; }
+  box.style.display='block';
+  btns.innerHTML = '<button class="cat-btn on" onclick="pickPart(\'전체\',this)">전체 <span class="cat-cnt">'+items.length+'</span></button>'
+    + parts.map(function(p){
+      return '<button class="cat-btn" onclick="pickPart(\''+p+'\',this)">🏷 '+p+' <span class="cat-cnt">'+partSet[p]+'</span></button>';
+    }).join('');
+}
+
+function pickPart(part, btn){
+  selPart = part;
+  document.querySelectorAll('#partBtns .cat-btn').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  document.getElementById('q').value='';
+  showCat();
 }
 
 // ══════════════════════════════════════
@@ -980,9 +1055,13 @@ function pickCat(cat,btn){
   showCat();
 }
 function showCat(){
-  var filtered=selCat==='전체'?items:items.filter(function(it){return it.type===selCat;});
-  var label=(selCat==='전체'?'전체':selCat)+' <span>'+filtered.length+'건</span>';
-  var et=filtered.length?'':(selCat==='전체'?'등록된 자료가 없습니다':selCat+' 분류의 자료가 없습니다');
+  var filtered = items;
+  if(selCat !== '전체') filtered = filtered.filter(function(it){return it.type===selCat;});
+  if(selPart !== '전체') filtered = filtered.filter(function(it){
+    return it.part && it.part.split(',').some(function(p){return p.trim()===selPart;});
+  });
+  var label=(selCat==='전체'?'전체':selCat)+(selPart!=='전체'?' / '+selPart:'')+' <span>'+filtered.length+'건</span>';
+  var et=filtered.length?'':(selCat==='전체'&&selPart==='전체'?'등록된 자료가 없습니다':'해당 분류의 자료가 없습니다');
   renderResults(filtered.map(function(it){return Object.assign({},it,{hits:[]});}),label,et,filtered.length?'':'자료 등록 탭에서 등록해주세요.');
 }
 function updateCatCounts(){
@@ -1002,7 +1081,7 @@ function setEmpty(t,d){
   document.getElementById('emptyTitle').textContent=t;
   document.getElementById('emptyDesc').textContent=d;
 }
-function refreshAll(){updateCatCounts();showCat();renderAdminCards();updateStats();buildQuickTags();}
+function refreshAll(){updateCatCounts();buildPartBtns();showCat();renderAdminCards();updateStats();buildQuickTags();}
 
 // ══════════════════════════════════════
 // 카드 렌더링
@@ -1023,6 +1102,7 @@ function makeCard(it){
     +(it.desc?'<div class="card-desc">'+it.desc+'</div>':'')
     +'<div class="card-meta">'
     +(it.src?'<span class="chip">📌 '+it.src+'</span>':'')
+    +(it.part?'<span class="chip" style="background:var(--warn-light);color:#92400e;">🏷 '+it.part+'</span>':'')
     +(it.date?'<span class="chip">🗓 '+it.date+'</span>':'')
     +(it.user?'<span class="chip">👤 '+it.user+'</span>':'')
     +'<span class="chip" style="color:var(--blue);">🔍 상세보기</span>'
